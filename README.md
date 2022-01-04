@@ -5,6 +5,7 @@ This is a Cards Against Humanity inspired game API.
 ## User Stories
 
 **As a player, I want to...**
+
 - Add a name so that I can be uniquely identified while playing
 - Draw up to 10 cards so that I have a full hand of cards
 - Draw a prompt so I can judge the responses
