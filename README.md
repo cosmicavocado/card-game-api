@@ -20,3 +20,22 @@ This is a Cards Against Humanity inspired game API.
 ## ERD
 
 <img width="386" alt="image" src="https://user-images.githubusercontent.com/80715577/148087733-7c9dfb8c-6756-445e-a392-7e40b5b9edf8.png">
+
+## Endpoints
+
+| Request Type | URL                                   | Request Body | Functionality                          |
+|--------------|---------------------------------------|--------------|----------------------------------------|
+| GET          | /api/player                           | None         | Get all players                        |
+| GET          | /api/player/{playerId}                | None         | Get single player                      |
+| POST         | /api/player                           | Player name  | Create new player                      |
+| PUT          | /api/player/{playerId}                | Player name  | Update player                          |
+| DELETE       | /api/player/{playerId}                | None         | Delete player                          |
+| GET          | /api/player/{playerId}/draw           | None         | Randomly draw up to 10 cards from list |
+| GET          | /api/player/{playerId}/cards          | None         | Get all cards                          |
+| GET          | /api/player/{playerId}/cards/{cardId} | None         | Get single card                        |
+| POST         | /api/cardlist                         | Card text    | Add custom card to card list           |
+| PUT          | /api/cardlist/{cardlistId}            | Card text    | Update custom card in card list        |
+| DELETE       | /api/cardlist/{cardlistId}            | None         | Delete custom card from card list      |
+| GET          | /api/prompt                           | None         | Get single prompt                      |
+| GET          | /api/prompt/{promptId}                | None         | Get all prompts                        |
+| GET          | /api/reset                            | None         | Reset the game                         |
