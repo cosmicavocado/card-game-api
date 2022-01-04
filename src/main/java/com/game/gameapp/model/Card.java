@@ -19,6 +19,11 @@ public class Card {
     public Card() {
     }
 
+    public Card(String text) {
+        this.text = text;
+        isCustom = true;
+    }
+
     public Long getId() {
         return id;
     }
