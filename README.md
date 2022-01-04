@@ -7,7 +7,7 @@ This is a Cards Against Humanity inspired game API.
 **As a player, I want to...**
 
 - Add a name so that I can be uniquely identified while playing
-- Draw up to 10 cards so that I have a full hand of cards
+- Draw up to 10 cards so that I have a full hand of 10 cards
 - Draw a prompt so I can judge the responses
 - Play a card so my response can be judged
 - Choose winning card so that the winning player can be awarded a point
@@ -20,7 +20,7 @@ This is a Cards Against Humanity inspired game API.
 
 ## ERD
 
-<img width="386" alt="image" src="https://user-images.githubusercontent.com/80715577/148087733-7c9dfb8c-6756-445e-a392-7e40b5b9edf8.png">
+<img width="473" alt="image" src="https://user-images.githubusercontent.com/80715577/148117268-300ffb48-3477-4a32-ae56-462945687523.png">
 
 ## Endpoints
 
