@@ -7,7 +7,7 @@ This is a Cards Against Humanity inspired game API.
 **As a player, I want to...**
 
 - Add a name so that I can be uniquely identified while playing
-- Draw up to 10 cards so that I have a full hand of 7 cards
+- Draw up to 10 cards so that I have a full hand of 10 cards
 - Draw a prompt so I can judge the responses
 - Play a card so my response can be judged
 - Choose winning card so that the winning player can be awarded a point
@@ -31,7 +31,7 @@ This is a Cards Against Humanity inspired game API.
 | POST         | /api/player                           | Player name  | Create new player                      |
 | PUT          | /api/player/{playerId}                | Player name  | Update player                          |
 | DELETE       | /api/player/{playerId}                | None         | Delete player                          |
-| GET          | /api/player/{playerId}/draw           | None         | Randomly draw up to 7 cards from list  |
+| GET          | /api/player/{playerId}/draw           | None         | Randomly draw up to 10 cards from list |
 | GET          | /api/player/{playerId}/cards          | None         | Get all cards                          |
 | GET          | /api/player/{playerId}/cards/{cardId} | None         | Get single card                        |
 | POST         | /api/cardlist                         | Card text    | Add custom card to card list           |
