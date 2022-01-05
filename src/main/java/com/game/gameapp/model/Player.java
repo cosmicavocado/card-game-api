@@ -14,11 +14,21 @@ public class Player {
     @Column
     private String name;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id",referencedColumnName = "id")
+    private PlayerProfile playerProfile;
+
     @Transient
     private int score;
 
     @Transient
+    private List<Card> deck;
+
+    @Transient
     private List<Card> hand;
+
+    @Transient
+    private List<Prompt> promptList;
 
     @Transient
     private Card response;
@@ -35,16 +45,20 @@ public class Player {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Card> getDeck() {
+        return deck;
+    }
+
+    public void setDeck(List<Card> deck) {
+        this.deck = deck;
     }
 
     public int getScore() {
