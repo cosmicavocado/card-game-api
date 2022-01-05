@@ -1,5 +1,6 @@
 package com.game.gameapp.service;
 
+import com.game.gameapp.exception.InformationExistsException;
 import com.game.gameapp.exception.InformationNotFoundException;
 import com.game.gameapp.model.Player;
 import com.game.gameapp.repository.PlayerRepository;
@@ -37,5 +38,15 @@ public class PlayerService {
             throw new InformationNotFoundException("Player with name id " + playerId + " does not exists.");
         }
         return player;
+    }
+
+    public Player createPlayer(Player playerObject) {
+        LOGGER.info("Calling createPlayer method from service.");
+        Player player = playerRepository.findByIdAndName(playerObject.getId(), playerObject.getName());
+        if (player != null) {
+            throw new InformationExistsException("Player with name " + playerObject.getName() + " already exists.");
+        } else {
+            return playerRepository.save(playerObject);
+        }
     }
 }

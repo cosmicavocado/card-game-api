@@ -35,4 +35,14 @@ public class PlayerController {
         LOGGER.info("Calling getPlayer method from controller.");
         return new ResponseEntity<>(playerService.getPlayer(playerId), HttpStatus.OK);
     }
+
+
+    // http://localhost:9092/api/player
+    @PostMapping(path = "/player")
+    public Player createPlayer(@RequestBody Player playerObject) {
+        LOGGER.info("Calling createPlayer method from controller.");
+        return playerService.createPlayer(playerObject);
+    }
+
+    // http://localhost:9092/api/player/{playerId}
 }
