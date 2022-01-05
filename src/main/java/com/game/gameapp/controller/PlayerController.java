@@ -3,8 +3,6 @@ package com.game.gameapp.controller;
 import com.game.gameapp.model.Player;
 import com.game.gameapp.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,9 +29,9 @@ public class PlayerController {
 
     // http://localhost:9092/api/player/{playerId}
     @GetMapping(path = "/player/{playerId}")
-    public ResponseEntity<Object> getPlayer(@PathVariable Long playerId) {
+    public Optional<Player> getPlayer(@PathVariable Long playerId) {
         LOGGER.info("Calling getPlayer method from controller.");
-        return new ResponseEntity<>(playerService.getPlayer(playerId), HttpStatus.OK);
+        return playerService.getPlayer(playerId);
     }
 
 
@@ -45,4 +43,9 @@ public class PlayerController {
     }
 
     // http://localhost:9092/api/player/{playerId}
+    @PutMapping(path ="/player/{playerId}")
+    public Player updatePlayer(@PathVariable Long playerId, @RequestBody Player playerObject) {
+        LOGGER.info("Calling updatePlayer method from controller.");
+        return playerService.updatePlayer(playerId, playerObject);
+    }
 }

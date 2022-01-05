@@ -49,4 +49,19 @@ public class PlayerService {
             return playerRepository.save(playerObject);
         }
     }
+
+    public Player updatePlayer(Long playerId, Player playerObject) {
+        LOGGER.info("Calling updatePlayer method from service.");
+        Optional<Player> player = playerRepository.findById(playerId);
+        if (player.isPresent()) {
+            if (playerObject.getName().equals(player.get().getName())) {
+                throw new InformationExistsException("Player with name " + playerObject.getName() + " already exists.");
+            } else {
+                player.get().setName(playerObject.getName());
+                return playerRepository.save(player.get());
+            }
+        } else {
+            throw new InformationNotFoundException("Player with name " + playerObject.getName() + " does not exists.");
+        }
+    }
 }
