@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -19,13 +20,22 @@ public class PlayerService {
         this.playerRepository = playerRepository;
     }
 
-    public List<Player> getPlayers(){
-        LOGGER.info("calling getPlayers method from service");
+    public List<Player> getPlayers() {
+        LOGGER.info("Calling getPlayers method from service.");
         List<Player> players = playerRepository.findAll();
-        if (players.isEmpty()){
-            throw new InformationNotFoundException("No Players Found");
+        if (players.isEmpty()) {
+            throw new InformationNotFoundException("No players found.");
         } else {
             return players;
         }
+    }
+
+    public Optional<Player> getPlayer(Long playerId) {
+        LOGGER.info("Calling getPlayer method from service.");
+        Optional<Player> player = playerRepository.findById(playerId);
+        if(player.isEmpty()){
+            throw new InformationNotFoundException("Player with name id " + playerId + " does not exists.");
+        }
+        return player;
     }
 }

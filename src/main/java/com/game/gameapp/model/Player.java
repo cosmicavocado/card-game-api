@@ -84,4 +84,20 @@ public class Player {
     public void setResponse(Card response) {
         this.response = response;
     }
+
+    public PlayerProfile getPlayerProfile() {
+        return playerProfile;
+    }
+
+    public void setPlayerProfile(PlayerProfile playerProfile) {
+        this.playerProfile = playerProfile;
+    }
+
+    public List<Prompt> getPromptList() {
+        return promptList;
+    }
+
+    public void setPromptList(List<Prompt> promptList) {
+        this.promptList = promptList;
+    }
 }
