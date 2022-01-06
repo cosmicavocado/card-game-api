@@ -48,4 +48,11 @@ public class PlayerController {
         LOGGER.info("Calling updatePlayer method from controller.");
         return playerService.updatePlayer(playerId, playerObject);
     }
+
+    // http://localhost:9092/api/player/{playerId}
+    @DeleteMapping(path ="/player/{playerId}")
+    public String deleteCategory(@PathVariable Long playerId) {
+        LOGGER.info("Calling deletePlayer method from controller.");
+        return playerService.deletePlayer(playerId);
+    }
 }

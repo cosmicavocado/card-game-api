@@ -2,6 +2,7 @@ package com.game.gameapp.service;
 
 import com.game.gameapp.exception.InformationExistsException;
 import com.game.gameapp.exception.InformationNotFoundException;
+import com.game.gameapp.model.Card;
 import com.game.gameapp.model.Player;
 import com.game.gameapp.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,16 @@ public class PlayerService {
             }
         } else {
             throw new InformationNotFoundException("Player with name " + playerObject.getName() + " does not exists.");
+        }
+    }
+
+    public String deletePlayer(Long playerId) {
+        LOGGER.info("Calling deletePlayer method from service.");
+        Optional<Player> player = playerRepository.findById(playerId);
+        if(player.isEmpty()){
+            throw new InformationNotFoundException("Player with id " + playerId + " does not exists.");
+        } else {
+            return "Player with id " + playerId + " deleted.";
         }
     }
 }
