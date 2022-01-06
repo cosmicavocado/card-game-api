@@ -62,4 +62,11 @@ public class PlayerController {
         LOGGER.info("Calling drawUpToTen method from controller.");
         return playerService.drawUpToTen(playerId);
     }
+
+    // http://localhost:9092/api/player/{playerId}/play
+    @GetMapping(path="/player/{playerId}/play")
+    public void playGame(@PathVariable Long playerId) {
+        LOGGER.info("Calling drawUpToTen method from controller.");
+        playerService.playGame(playerId);
+    }
 }

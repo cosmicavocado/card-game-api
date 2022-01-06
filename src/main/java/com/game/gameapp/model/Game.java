@@ -14,6 +14,21 @@ public class Game {
     @Transient
     private List<Player> currentPlayers;
 
+    @Transient
+    private int score;
+
+    @Transient
+    private static List<Card> deck;
+
+    @Transient
+    private List<Card> hand;
+
+    @Transient
+    private static List<Prompt> promptList;
+
+    @Transient
+    private Card response;
+
     public Game() {
     }
 
@@ -31,5 +46,37 @@ public class Game {
 
     public void setCurrentPlayers(List<Player> currentPlayers) {
         this.currentPlayers = currentPlayers;
+    }
+
+    public List<Card> getDeck() {
+        return deck;
+    }
+
+    public void setDeck(List<Card> deck) {
+        Game.deck = deck;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public Card getResponse() {
+        return response;
+    }
+
+    public void setResponse(Card response) {
+        this.response = response;
+    }
+
+    public List<Prompt> getPromptList() {
+        return promptList;
+    }
+
+    public void setPromptList(List<Prompt> promptList) {
+        this.promptList = promptList;
     }
 }

@@ -2,6 +2,7 @@ package com.game.gameapp.controller;
 
 import com.game.gameapp.model.Player;
 import com.game.gameapp.service.GameService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,12 +16,19 @@ public class GameController {
     private static final Logger LOGGER = Logger.getLogger(PlayerController.class.getName());
     private GameService gameService;
 
+    @Autowired
+    public void setGameService(GameService gameService) {
+        this.gameService = gameService;
+    }
+
     @GetMapping("/play")
-    public void playGame(List<Player> currentPlayers) {
+    public void playGame(Long playerId) {
         LOGGER.info("Calling playGame from game logic controller.");
+        System.out.println(playerId);
         // checks for minimum number of players
-        if (currentPlayers.size() >= 4) {
-            gameService.playGame(currentPlayers);
-        }
+//        if (currentPlayers.size() >= 4) {
+//            gameService.playGame(currentPlayers);
+//        }
+        gameService.playGame(playerId);
     }
 }

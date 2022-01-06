@@ -1,6 +1,7 @@
 package com.game.gameapp.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,24 +15,8 @@ public class Player {
     @Column
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_id",referencedColumnName = "id")
-    private PlayerProfile playerProfile;
-
     @Transient
-    private int score;
-
-    @Transient
-    private static List<Card> deck;
-
-    @Transient
-    private List<Card> hand;
-
-    @Transient
-    private static List<Prompt> promptList;
-
-    @Transient
-    private Card response;
+    public List<Card> hand = new ArrayList<>();
 
     public Player() {
     }
@@ -52,22 +37,6 @@ public class Player {
         this.name = name;
     }
 
-    public List<Card> getDeck() {
-        return deck;
-    }
-
-    public void setDeck(List<Card> deck) {
-        Player.deck = deck;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
     public List<Card> getHand() {
         return hand;
     }
@@ -76,27 +45,7 @@ public class Player {
         this.hand = hand;
     }
 
-    public Card getResponse() {
-        return response;
-    }
-
-    public void setResponse(Card response) {
-        this.response = response;
-    }
-
-    public PlayerProfile getPlayerProfile() {
-        return playerProfile;
-    }
-
-    public void setPlayerProfile(PlayerProfile playerProfile) {
-        this.playerProfile = playerProfile;
-    }
-
-    public List<Prompt> getPromptList() {
-        return promptList;
-    }
-
-    public void setPromptList(List<Prompt> promptList) {
-        this.promptList = promptList;
+    public void setCard(Card card) {
+        this.hand.add(card);
     }
 }

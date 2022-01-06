@@ -2,7 +2,9 @@ package com.game.gameapp.service;
 
 import com.game.gameapp.exception.InformationExistsException;
 import com.game.gameapp.exception.InformationNotFoundException;
+import com.game.gameapp.model.Card;
 import com.game.gameapp.model.Player;
+import com.game.gameapp.repository.CardRepository;
 import com.game.gameapp.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,19 @@ import java.util.logging.Logger;
 public class PlayerService {
     private PlayerRepository playerRepository;
     private static final Logger LOGGER = Logger.getLogger(PlayerService.class.getName());
+    private CardRepository cardRepository;
+
+    private GameService gameService;
+
+    @Autowired
+    public void setGameService(GameService gameService) {
+        this.gameService = gameService;
+    }
+
+    @Autowired
+    public void setCardRepository(CardRepository cardRepository) {
+        this.cardRepository = cardRepository;
+    }
 
     @Autowired
     public void setPlayerRepository(PlayerRepository playerRepository) {
@@ -34,7 +49,7 @@ public class PlayerService {
     public Optional<Player> getPlayer(Long playerId) {
         LOGGER.info("Calling getPlayer method from service.");
         Optional<Player> player = playerRepository.findById(playerId);
-        if(player.isEmpty()){
+        if (player.isEmpty()) {
             throw new InformationNotFoundException("Player with name id " + playerId + " does not exists.");
         }
         return player;
@@ -68,31 +83,18 @@ public class PlayerService {
     public String deletePlayer(Long playerId) {
         LOGGER.info("Calling deletePlayer method from service.");
         Optional<Player> player = playerRepository.findById(playerId);
-        if(player.isEmpty()){
+        if (player.isEmpty()) {
             throw new InformationNotFoundException("Player with id " + playerId + " does not exists.");
         } else {
             return "Player with id " + playerId + " deleted.";
         }
     }
 
-    //TODO Draw 10 cards
-    public String drawUpToTen(Long playerId) {
-    LOGGER.info("Calling drawUpToTen method from service.");
-    Optional<Player> player = playerRepository.findById(playerId);
-    if (player.isPresent()) {
-        if (player.get().getHand().size() < 10) {
-            LOGGER.info("Player " + player.get().getName() + " drew up to 10 cards");
-            // randomly "draw" from deck
-            // remove drawn cards from deck list
-            // set hand to new hand??
-            player.get().setHand(player.get().getHand()); // maybe something like this??
-        } else {
-            LOGGER.warning("Hand is full!");
-            return "Hand is full!";
-        }
-    } else {
-        throw new InformationNotFoundException("Player with " + playerId + " does not exist.");
+    public String drawUpToTen(Long playerId){
+        return gameService.drawUpToTen(playerId);
     }
-    return "Cards drawn!";
+
+    public void playGame(Long playerId) {
+        gameService.playGame(playerId);
     }
 }
