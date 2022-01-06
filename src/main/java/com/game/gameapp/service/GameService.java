@@ -10,10 +10,7 @@ import com.game.gameapp.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static java.util.Collections.emptyList;
@@ -49,18 +46,23 @@ public class GameService {
         LOGGER.info("Calling drawUpToTen method from service.");
         Optional<Player> player = playerRepository.findById(playerId);
 //        List<Card> tempHand = player.get().getHand();
-
+//        ArrayList<Card> tempHand = player.get().getHand();
+        System.out.println("Current player hand size " + player.get().getHand().size());
         if (player.get().getHand().size()< 10) {
             LOGGER.info("Player " + player.get().getName() + " is drawing up to 10 cards");
-            for (int i=0; i<10-player.get().getHand().size(); i++) {
+            do {
                 // randomly "draw" from deck
                 int n = rng.nextInt(deck.size());
                 Card newCard = deck.get(n);
-                player.get().hand.add(newCard);
+//                tempHand.add(newCard);
                 // add cards from deck to hand
+                player.get().setCard(newCard);
+                deck.remove(n);
+            } while(player.get().hand.size()<10);
+
                 // player.get().setCard(newCard);
                 // remove cards from deck
-            }
+
             // set hand to new hand
 //            player.get().setHand();
 
@@ -73,18 +75,24 @@ public class GameService {
             LOGGER.warning("Hand is full!");
             return "Hand is full!";
         }
-    return "Cards drawn!";
+        System.out.println(player.get().hand.size());
+        return "Cards drawn!";
     }
 
     public void playGame(Long playerId) {
         // get players (will turn into a loop later)
         Optional<Player> player = playerRepository.findById(playerId);
         // check all players exist
-        player.get().setHand(emptyList());
+        player.get().setHand(new ArrayList<>());
         // create deck
         deck = cardRepository.findAll();
+        System.out.println("initial deck size: " + cardRepository.count());
         // deal cards
         drawUpToTen(playerId);
+        for (int i=0; i<player.get().hand.size(); i++) {
+            System.out.println(player.get().hand.get(i).getText());
+        }
+        System.out.println("new size " + deck.size());
         // use rng to pick random player for judge
         // switch judges sequentially each round???
     }
