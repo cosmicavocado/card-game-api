@@ -22,13 +22,13 @@ public class Player {
     private int score;
 
     @Transient
-    private List<Card> deck;
+    private static List<Card> deck;
 
     @Transient
     private List<Card> hand;
 
     @Transient
-    private List<Prompt> promptList;
+    private static List<Prompt> promptList;
 
     @Transient
     private Card response;
@@ -38,7 +38,6 @@ public class Player {
 
     public Player(String name) {
         this.name = name;
-        this.score = 0;
     }
 
     public Long getId() {
@@ -58,7 +57,7 @@ public class Player {
     }
 
     public void setDeck(List<Card> deck) {
-        this.deck = deck;
+        Player.deck = deck;
     }
 
     public int getScore() {

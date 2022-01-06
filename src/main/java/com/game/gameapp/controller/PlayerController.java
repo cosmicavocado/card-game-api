@@ -55,4 +55,11 @@ public class PlayerController {
         LOGGER.info("Calling deletePlayer method from controller.");
         return playerService.deletePlayer(playerId);
     }
+
+    // http://localhost:9092/api/player/{playerId}/draw
+    @GetMapping(path="/player/{playerId}/draw")
+    public String drawUpToTen(@PathVariable Long playerId) {
+        LOGGER.info("Calling drawUpToTen method from controller.");
+        return playerService.drawUpToTen(playerId);
+    }
 }

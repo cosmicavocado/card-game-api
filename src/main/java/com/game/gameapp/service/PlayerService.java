@@ -2,7 +2,6 @@ package com.game.gameapp.service;
 
 import com.game.gameapp.exception.InformationExistsException;
 import com.game.gameapp.exception.InformationNotFoundException;
-import com.game.gameapp.model.Card;
 import com.game.gameapp.model.Player;
 import com.game.gameapp.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,5 +73,26 @@ public class PlayerService {
         } else {
             return "Player with id " + playerId + " deleted.";
         }
+    }
+
+    //TODO Draw 10 cards
+    public String drawUpToTen(Long playerId) {
+    LOGGER.info("Calling drawUpToTen method from service.");
+    Optional<Player> player = playerRepository.findById(playerId);
+    if (player.isPresent()) {
+        if (player.get().getHand().size() < 10) {
+            LOGGER.info("Player " + player.get().getName() + " drew up to 10 cards");
+            // randomly "draw" from deck
+            // remove drawn cards from deck list
+            // set hand to new hand??
+            player.get().setHand(player.get().getHand()); // maybe something like this??
+        } else {
+            LOGGER.warning("Hand is full!");
+            return "Hand is full!";
+        }
+    } else {
+        throw new InformationNotFoundException("Player with " + playerId + " does not exist.");
+    }
+    return "Cards drawn!";
     }
 }
