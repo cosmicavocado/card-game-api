@@ -5,10 +5,7 @@ import com.game.gameapp.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.logging.Logger;
 
 @RestController
@@ -64,10 +61,10 @@ public class PlayerController {
         LOGGER.info("Calling drawUpToTen method from player controller.");
         return playerService.drawUpToTen(playerId);
     }
-    
+
     // http://localhost:9092/api/player/{playerIds}/play
     @PostMapping(path="/player/play")
-    public void playGame(@RequestBody HashMap<String, ArrayList<Long>> players) {
+    public void playGame(@RequestBody LinkedHashMap<String, ArrayList<Long>> players) {
         LOGGER.info("Calling playGame method from player controller.");
         playerService.playGame(players);
     }

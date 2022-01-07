@@ -1,7 +1,7 @@
 package com.game.gameapp.model;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "game")
@@ -12,27 +12,21 @@ public class Game {
     private Long id;
 
     @Transient
-    private List<Player> currentPlayers;
+    private ArrayList<Player> currentPlayers;
 
     @Transient
-    private int score;
+    private int topScore;
 
     @Transient
-    private static List<Card> deck;
+    private static ArrayList<Card> deck;
 
     @Transient
-    private List<Card> hand;
-
-    @Transient
-    private static List<Prompt> promptList;
-
-    @Transient
-    private Card response;
+    private static ArrayList<Prompt> promptList;
 
     public Game() {
     }
 
-    public Game(List<Player> currentPlayers) {
+    public Game(ArrayList<Player> currentPlayers) {
         this.currentPlayers = currentPlayers;
     }
 
@@ -40,43 +34,35 @@ public class Game {
         return id;
     }
 
-    public List<Player> getCurrentPlayers() {
+    public ArrayList<Player> getCurrentPlayers() {
         return currentPlayers;
     }
 
-    public void setCurrentPlayers(List<Player> currentPlayers) {
+    public void setCurrentPlayers(ArrayList<Player> currentPlayers) {
         this.currentPlayers = currentPlayers;
     }
 
-    public List<Card> getDeck() {
+    public ArrayList<Card> getDeck() {
         return deck;
     }
 
-    public void setDeck(List<Card> deck) {
+    public void setDeck(ArrayList<Card> deck) {
         Game.deck = deck;
     }
 
     public int getScore() {
-        return score;
+        return topScore;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setScore(int topScore) {
+        this.topScore = topScore;
     }
 
-    public Card getResponse() {
-        return response;
-    }
-
-    public void setResponse(Card response) {
-        this.response = response;
-    }
-
-    public List<Prompt> getPromptList() {
+    public ArrayList<Prompt> getPromptList() {
         return promptList;
     }
 
-    public void setPromptList(List<Prompt> promptList) {
+    public void setPromptList(ArrayList<Prompt> promptList) {
         this.promptList = promptList;
     }
 }

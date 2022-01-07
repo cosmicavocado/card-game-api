@@ -7,10 +7,7 @@ import com.game.gameapp.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Service
@@ -87,7 +84,7 @@ public class PlayerService {
         return gameService.drawUpToTen(playerId);
     }
 
-    public void playGame(HashMap<String, ArrayList<Long>> players) {
+    public void playGame(LinkedHashMap<String, ArrayList<Long>> players) {
         gameService.playGame(players);
     }
 }
