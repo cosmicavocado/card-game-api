@@ -4,25 +4,28 @@ import com.game.gameapp.exception.InformationNotFoundException;
 import com.game.gameapp.model.Card;
 import com.game.gameapp.model.Game;
 import com.game.gameapp.model.Player;
+import com.game.gameapp.model.Prompt;
 import com.game.gameapp.repository.CardRepository;
 import com.game.gameapp.repository.GameRepository;
 import com.game.gameapp.repository.PlayerRepository;
+import com.game.gameapp.repository.PromptRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.logging.Logger;
-
-import static java.util.Collections.emptyList;
+import java.util.stream.Collectors;
 
 @Service
 public class GameService {
     private static final Logger LOGGER = Logger.getLogger(GameService.class.getName());
-    private static List<Card> deck;
+    private static ArrayList<Card> deck;
+    private static ArrayList<Prompt> prompts;
     private static Random rng = new Random();
     private GameRepository gameRepository;
     private PlayerRepository playerRepository;
     private CardRepository cardRepository;
+    private PromptRepository promptRepository;
 
     @Autowired
     public void setGameRepository(GameRepository gameRepository) {
@@ -39,38 +42,23 @@ public class GameService {
         this.cardRepository = cardRepository;
     }
 
+    @Autowired
+    public void setPromptRepository(PromptRepository promptRepository) {
+        this.promptRepository = promptRepository;
+    }
 
-
-    //TODO Draw 10 cards
     public String drawUpToTen(Long playerId) {
-        LOGGER.info("Calling drawUpToTen method from service.");
+        LOGGER.info("Calling drawUpToTen method from game service.");
         Optional<Player> player = playerRepository.findById(playerId);
-//        List<Card> tempHand = player.get().getHand();
-//        ArrayList<Card> tempHand = player.get().getHand();
         System.out.println("Current player hand size " + player.get().getHand().size());
-        if (player.get().getHand().size()< 10) {
+        if (player.get().getHand().size()<10) {
             LOGGER.info("Player " + player.get().getName() + " is drawing up to 10 cards");
             do {
-                // randomly "draw" from deck
                 int n = rng.nextInt(deck.size());
                 Card newCard = deck.get(n);
-//                tempHand.add(newCard);
-                // add cards from deck to hand
                 player.get().setCard(newCard);
                 deck.remove(n);
             } while(player.get().hand.size()<10);
-
-                // player.get().setCard(newCard);
-                // remove cards from deck
-
-            // set hand to new hand
-//            player.get().setHand();
-
-            // remove drawn cards from deck list
-
-            // set hand to new hand
-//                player.get().setHand(player.get().getHand()); // maybe something like this??
-//                playerRepository.save(player.get()); // then save??
         } else {
             LOGGER.warning("Hand is full!");
             return "Hand is full!";
@@ -79,21 +67,31 @@ public class GameService {
         return "Cards drawn!";
     }
 
-    public void playGame(Long playerId) {
-        // get players (will turn into a loop later)
-        Optional<Player> player = playerRepository.findById(playerId);
-        // check all players exist
-        player.get().setHand(new ArrayList<>());
+    // loop all current players in playGame
+    // take an arrayList of players/playerIds
+    public void playGame(HashMap<String, ArrayList<Long>> players) {
+        LOGGER.info("Calling playGame method from service.");
         // create deck
-        deck = cardRepository.findAll();
-        System.out.println("initial deck size: " + cardRepository.count());
-        // deal cards
-        drawUpToTen(playerId);
-        for (int i=0; i<player.get().hand.size(); i++) {
-            System.out.println(player.get().hand.get(i).getText());
+        deck = (ArrayList<Card>) cardRepository.findAll();
+        // create prompt deck
+        prompts = (ArrayList<Prompt>) promptRepository.findAll();
+
+        // Set up players
+        // for ArrayList length, loop each playerId
+        for (ArrayList<Long> playerIds : players.values()) {
+            for (int i=0; i<playerIds.size(); i++) {
+                Optional<Player> player = playerRepository.findById(playerIds.get(i));
+                System.out.println("Player " + player.get().getName()+" w/ id "+ playerIds.get(i));
+                // set hand to empty
+                player.get().setHand(new ArrayList<>());
+                // set initial score to 0
+                player.get().setScore(0);
+                // deal cards
+                drawUpToTen(playerIds.get(i));
+            }
         }
-        System.out.println("new size " + deck.size());
+
+        // while topScore != 10, loop game
         // use rng to pick random player for judge
-        // switch judges sequentially each round???
     }
 }

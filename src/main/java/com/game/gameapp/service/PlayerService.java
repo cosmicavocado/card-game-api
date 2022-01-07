@@ -2,33 +2,26 @@ package com.game.gameapp.service;
 
 import com.game.gameapp.exception.InformationExistsException;
 import com.game.gameapp.exception.InformationNotFoundException;
-import com.game.gameapp.model.Card;
 import com.game.gameapp.model.Player;
-import com.game.gameapp.repository.CardRepository;
 import com.game.gameapp.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
 public class PlayerService {
-    private PlayerRepository playerRepository;
     private static final Logger LOGGER = Logger.getLogger(PlayerService.class.getName());
-    private CardRepository cardRepository;
-
+    private PlayerRepository playerRepository;
     private GameService gameService;
 
     @Autowired
     public void setGameService(GameService gameService) {
         this.gameService = gameService;
-    }
-
-    @Autowired
-    public void setCardRepository(CardRepository cardRepository) {
-        this.cardRepository = cardRepository;
     }
 
     @Autowired
@@ -56,8 +49,8 @@ public class PlayerService {
     }
 
     public Player createPlayer(Player playerObject) {
-        LOGGER.info("Calling createPlayer method from service.");
-        Player player = playerRepository.findByIdAndName(playerObject.getId(), playerObject.getName());
+        LOGGER.info("Calling createPlayer method from player service.");
+        Player player = playerRepository.findByName(playerObject.getName());
         if (player != null) {
             throw new InformationExistsException("Player with name " + playerObject.getName() + " already exists.");
         } else {
@@ -66,7 +59,7 @@ public class PlayerService {
     }
 
     public Player updatePlayer(Long playerId, Player playerObject) {
-        LOGGER.info("Calling updatePlayer method from service.");
+        LOGGER.info("Calling updatePlayer method from player service.");
         Optional<Player> player = playerRepository.findById(playerId);
         if (player.isPresent()) {
             if (playerObject.getName().equals(player.get().getName())) {
@@ -81,7 +74,7 @@ public class PlayerService {
     }
 
     public String deletePlayer(Long playerId) {
-        LOGGER.info("Calling deletePlayer method from service.");
+        LOGGER.info("Calling deletePlayer method from player service.");
         Optional<Player> player = playerRepository.findById(playerId);
         if (player.isEmpty()) {
             throw new InformationNotFoundException("Player with id " + playerId + " does not exists.");
@@ -94,7 +87,7 @@ public class PlayerService {
         return gameService.drawUpToTen(playerId);
     }
 
-    public void playGame(Long playerId) {
-        gameService.playGame(playerId);
+    public void playGame(HashMap<String, ArrayList<Long>> players) {
+        gameService.playGame(players);
     }
 }
