@@ -12,17 +12,18 @@ This is a Cards Against Humanity inspired game API.
 
 #### Development
   
-  IntelliJ
-  Spring Boot
-  Postman
-  PgAdmin 
+  - IntelliJ
+  - Spring Boot
+  - Postman
+  - PgAdmin 
 
 #### Planning
 
 - Google Docs
 - Trello
 - LucidChard (ERD)
-- Communication
+
+### Communication
 - Slack
 - Zoom
 
