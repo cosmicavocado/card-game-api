@@ -32,4 +32,11 @@ public class CardController {
         LOGGER.info("Calling createCard method from card controller");
         return cardService.updateCard(cardId, cardObject);
     }
+
+    // http://localhost:9092/api/card/{cardId}
+    @DeleteMapping(path="/card/{cardId}")
+    public String deleteCard(@PathVariable Long cardId) {
+        LOGGER.info("Calling deleteCard method from card controller.");
+        return "Card with id " + cardId + " deleted.";
+    }
 }
