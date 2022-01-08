@@ -23,7 +23,7 @@ This is a Cards Against Humanity inspired game API.
 - Trello
 - LucidChard (ERD)
 
-### Communication
+#### Communication
 - Slack
 - Zoom
 
