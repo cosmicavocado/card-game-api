@@ -2,6 +2,30 @@
 
 This is a Cards Against Humanity inspired game API.
 
+## Technologies
+
+#### Version Control
+
+  - WSL
+  - Git
+  - Github
+
+#### Development
+  
+  IntelliJ
+  Spring Boot
+  Postman
+  PgAdmin 
+
+#### Planning
+
+- Google Docs
+- Trello
+- LucidChard (ERD)
+- Communication
+- Slack
+- Zoom
+
 ## User Stories
 
 **As a player, I want to...**
@@ -34,9 +58,9 @@ This is a Cards Against Humanity inspired game API.
 | GET          | /api/player/{playerId}/draw           | None         | Randomly draw up to 10 cards from list |
 | GET          | /api/player/{playerId}/cards          | None         | Get all cards                          |
 | GET          | /api/player/{playerId}/cards/{cardId} | None         | Get single card                        |
-| POST         | /api/cardlist                         | Card text    | Add custom card to card list           |
-| PUT          | /api/cardlist/{cardlistId}            | Card text    | Update custom card in card list        |
-| DELETE       | /api/cardlist/{cardlistId}            | None         | Delete custom card from card list      |
+| POST         | /api/card                             | Card text    | Add custom card to card list           |
+| PUT          | /api/card/{cardId}                    | Card text    | Update custom card in card list        |
+| DELETE       | /api/card/{cardId}                    | None         | Delete custom card from card list      |
 | GET          | /api/prompt                           | None         | Get single prompt                      |
 | GET          | /api/prompt/{promptId}                | None         | Get all prompts                        |
-| GET          | /api/reset                            | None         | Reset the game                         |
+| GET          | /api/play                             | None         | Start the game                         |

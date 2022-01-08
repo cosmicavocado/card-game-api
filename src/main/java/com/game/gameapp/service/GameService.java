@@ -48,7 +48,7 @@ public class GameService {
             } while(player.get().hand.size()<10);
         }
     }
-    
+
     // take an arrayList of players/playerIds
     public void playGame(LinkedHashMap<String, ArrayList<Long>> players) {
         LOGGER.info("Calling playGame method from service.");

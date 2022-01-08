@@ -33,7 +33,6 @@ public class PlayerController {
         return playerService.getPlayer(playerId);
     }
 
-
     // http://localhost:9092/api/player
     @PostMapping(path = "/player")
     public Player createPlayer(@RequestBody Player playerObject) {
