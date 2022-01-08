@@ -47,6 +47,7 @@ public class CardService {
     }
 
     public String deleteCard(Long cardId) {
+        LOGGER.info("Calling deleteCard method from card service.");
         Optional<Card> card = cardRepository.findById(cardId);
         if (card.isEmpty()) {
             throw new InformationNotFoundException("Card with id " + cardId + " does not exist.");
