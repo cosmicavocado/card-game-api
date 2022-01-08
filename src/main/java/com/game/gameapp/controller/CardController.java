@@ -37,6 +37,6 @@ public class CardController {
     @DeleteMapping(path="/card/{cardId}")
     public String deleteCard(@PathVariable Long cardId) {
         LOGGER.info("Calling deleteCard method from card controller.");
-        return "Card with id " + cardId + " deleted.";
+        return cardService.deleteCard(cardId);
     }
 }
