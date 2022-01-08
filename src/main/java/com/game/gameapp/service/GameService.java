@@ -38,7 +38,6 @@ public class GameService {
     }
 
     public void drawUpToTen(Long playerId) {
-//        LOGGER.info("Calling drawUpToTen method from game service.");
         Optional<Player> player = playerRepository.findById(playerId);
         if (player.isPresent() && player.get().getHand().size()<10) {
             do {
@@ -49,8 +48,7 @@ public class GameService {
             } while(player.get().hand.size()<10);
         }
     }
-
-    // loop all current players in playGame
+    
     // take an arrayList of players/playerIds
     public void playGame(LinkedHashMap<String, ArrayList<Long>> players) {
         LOGGER.info("Calling playGame method from service.");
@@ -65,7 +63,8 @@ public class GameService {
             // Check that player exists
             if (player.isPresent()) {
                 currentPlayers.add(player.get());
-                LOGGER.info("Player " + player.get().getName() + " w/ id " + player.get().getId() + " added to the game.");
+                LOGGER.info("Player " + player.get().getName() + " w/ id " + player.get().getId()
+                        + " added to the game.");
                 // set hand to empty
                 player.get().setHand(new ArrayList<>());
                 // set initial score to 0
@@ -89,16 +88,17 @@ public class GameService {
             ArrayList<Card> responses = new ArrayList<>();
             ArrayList<Player> responsePlayer = new ArrayList<>();
 
+            // judge pulls prompt
+            int n = rng.nextInt(prompts.size());
+            Prompt prompt = prompts.get(n);
+            prompts.remove(n);
+            LOGGER.info(prompt.getText() + " pulled by judge " + judge.getName());
+
             // loop all players for this round
             for(Player player : currentPlayers) {
                 drawUpToTen(player.getId()); // keeps all players at max hand size
                 // if player is judge this round
-                if(player.equals(judge)) {
-                    int n = rng.nextInt(prompts.size());
-                    Prompt prompt = prompts.get(n);
-                    prompts.remove(n);
-                    LOGGER.info(prompt.getText() + " pulled by judge " + judge.getName());
-                } else {
+                if(!player.equals(judge)) {
                     Card randomCard = player.hand.get(rng.nextInt(10));
                     responses.add(randomCard);
                     responsePlayer.add(player);
@@ -107,13 +107,12 @@ public class GameService {
             }
 
             // judge picks winning response (random to simulate gameplay)
-            int n = rng.nextInt(responses.size());
+            n = rng.nextInt(responses.size());
             responses.get(n);
             Player winner = responsePlayer.get(n);
 
             // winning player score +1
             winner.setScore(winner.getScore()+1);
-            LOGGER.info(winner.getName()+" wins! Their new score is " + winner.getScore());
             // if player score > topScore
             if (winner.getScore() > topScore) {
                 // topScore = player score
@@ -121,6 +120,7 @@ public class GameService {
             }
             // If game over != true
             if (topScore != 10) {
+                LOGGER.info(winner.getName()+" wins round " + round + "! Their new score is " + winner.getScore());
                 // Rotate next judge
                 int nextJudge = index+1;
                 // if index + 1 == playerIds.size()
