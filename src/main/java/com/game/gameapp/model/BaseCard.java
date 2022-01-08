@@ -3,8 +3,8 @@ package com.game.gameapp.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "card")
-public class Card {
+@Table(name = "base_card")
+public class BaseCard {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,7 +13,7 @@ public class Card {
     @Column
     private String text;
 
-    public Card() {
+    public BaseCard() {
     }
 
     public Long getId() {
@@ -27,5 +27,4 @@ public class Card {
     public void setText(String text) {
         this.text = text;
     }
-
 }
