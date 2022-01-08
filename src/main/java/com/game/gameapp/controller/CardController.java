@@ -4,10 +4,7 @@ import com.game.gameapp.model.Card;
 import com.game.gameapp.service.CardService;
 import com.game.gameapp.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Logger;
 
@@ -27,5 +24,12 @@ public class CardController {
     public Card createCard(@RequestBody Card cardObject) {
         LOGGER.info("Calling createCard method from card controller");
         return cardService.createCard(cardObject);
+    }
+
+    // http://localhost:9092/api/card/{cardId}
+    @PutMapping(path="card/{cardId}")
+    public Card updateCard(@PathVariable Long cardId, @RequestBody Card cardObject) {
+        LOGGER.info("Calling createCard method from card controller");
+        return cardService.updateCard(cardId, cardObject);
     }
 }
