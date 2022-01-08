@@ -57,9 +57,9 @@ public class PlayerController {
 
     // http://localhost:9092/api/player/{playerId}/draw
     @GetMapping(path="/player/{playerId}/draw")
-    public String drawUpToTen(@PathVariable Long playerId) {
+    public void drawUpToTen(@PathVariable Long playerId) {
         LOGGER.info("Calling drawUpToTen method from player controller.");
-        return playerService.drawUpToTen(playerId);
+        playerService.drawUpToTen(playerId);
     }
 
     // http://localhost:9092/api/player/{playerIds}/play

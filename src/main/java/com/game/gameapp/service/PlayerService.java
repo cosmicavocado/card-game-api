@@ -80,8 +80,8 @@ public class PlayerService {
         }
     }
 
-    public String drawUpToTen(Long playerId){
-        return gameService.drawUpToTen(playerId);
+    public void drawUpToTen(Long playerId){
+        gameService.drawUpToTen(playerId);
     }
 
     public void playGame(LinkedHashMap<String, ArrayList<Long>> players) {

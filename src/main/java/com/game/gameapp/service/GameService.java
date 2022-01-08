@@ -19,15 +19,9 @@ public class GameService {
     private static ArrayList<Card> deck;
     private static ArrayList<Prompt> prompts;
     private static Random rng = new Random();
-    private GameRepository gameRepository;
     private PlayerRepository playerRepository;
     private CardRepository cardRepository;
     private PromptRepository promptRepository;
-
-    @Autowired
-    public void setGameRepository(GameRepository gameRepository) {
-        this.gameRepository = gameRepository;
-    }
 
     @Autowired
     public void setPlayerRepository(PlayerRepository playerRepository) {
@@ -44,7 +38,7 @@ public class GameService {
         this.promptRepository = promptRepository;
     }
 
-    public String drawUpToTen(Long playerId) {
+    public void drawUpToTen(Long playerId) {
         LOGGER.info("Calling drawUpToTen method from game service.");
         Optional<Player> player = playerRepository.findById(playerId);
         if (player.get().getHand().size()<10) {
@@ -55,37 +49,33 @@ public class GameService {
                 player.get().setCard(newCard);
                 deck.remove(n);
             } while(player.get().hand.size()<10);
-        } else {
-            LOGGER.warning("Hand is full!");
-            return "Hand is full!";
         }
-        return "Cards drawn!";
     }
 
     // loop all current players in playGame
     // take an arrayList of players/playerIds
     public void playGame(LinkedHashMap<String, ArrayList<Long>> players) {
-        ArrayList<Long>playerIds = players.get("players");
         LOGGER.info("Calling playGame method from service.");
-        // create deck
-        deck = (ArrayList<Card>) cardRepository.findAll();
-        // create prompt deck
-        prompts = (ArrayList<Prompt>) promptRepository.findAll();
+        // Empty list to store player objects
+        ArrayList<Player> currentPlayers = new ArrayList<>();
+        // Saves playerIds from HashMap to ArrayList
+        ArrayList<Long> playerIds = players.get("players");
 
-        // Set up players
-        // for ArrayList length, loop each playerId
-        for (ArrayList<Long> playerIdsList : players.values()) {
-            for (int i=0; i<playerIdsList.size(); i++) {
-                Optional<Player> player = playerRepository.findById(playerIdsList.get(i));
-                LOGGER.info("Player " + player.get().getName()+" w/ id "+ playerIdsList.get(i));
+        // For all playerIds
+        for (Long playerId : playerIds) {
+            Optional<Player> player = playerRepository.findById(playerId);
+            if (player.isPresent()) {
+                currentPlayers.add(player.get());
+                LOGGER.info("Player " + player.get().getName() + " w/ id " + player.get().getName() + " added to the game.");
                 // set hand to empty
                 player.get().setHand(new ArrayList<>());
                 // set initial score to 0
                 player.get().setScore(0);
-                // deal cards
-                drawUpToTen(playerIdsList.get(i));
             }
         }
+        // create deck & prompts
+        deck = (ArrayList<Card>) cardRepository.findAll();
+        prompts = (ArrayList<Prompt>) promptRepository.findAll();
 
         // use rng to pick random player for judge
         int index = rng.nextInt(players.values().size());
@@ -95,33 +85,57 @@ public class GameService {
 
         // while topScore != 10, loop game
         while (topScore != 10) {
+            // deal cards
+
+
             // judge draws a prompt
             int rand = rng.nextInt(prompts.size());
             Prompt p = prompts.get(rand);
             prompts.remove(rand);
 
-            ArrayList<Card> responses = new ArrayList<Card>();
-
+            ArrayList<Card> responses = new ArrayList<>();
+            ArrayList<Player> responsePlayer = new ArrayList<>();
             // all non judge players give response
+            //TODO FIX TO EXCLUDE JUDGE
             for(int i=0; i<playerIds.size(); i++) {
-                if (i != judge.get().getId()) {
-                    // get non judge player
-                    Optional<Player> currPlayer = playerRepository.findById(playerIds.get(i));
+                drawUpToTen(playerIds.get(i));
+                // get non judge player
+                Optional<Player> currPlayer = playerRepository.findById(playerIds.get(i));
+                if (i != index) {
                     // random response card to simulate player choice
                     Card randomCard = currPlayer.get().hand.get(rng.nextInt(10));
                     responses.add(randomCard);
+                    responsePlayer.add(currPlayer.get());
                     LOGGER.info(currPlayer.get().getName() + " played " + randomCard.getText());
                 }
             }
-            
-            // judge picks winning response
+
+            // judge picks winning response (random to simulate gameplay)
+            int resp = rng.nextInt(responses.size());
+            responses.get(resp);
+            Player winner = responsePlayer.get(resp);
+
             // winning player score +1
+            winner.setScore(winner.getScore()+1);
+            LOGGER.info(winner.getName()+" new score is " + winner.getScore());
             // if player score > topScore
+            if (winner.getScore() > topScore) {
                 // topScore = player score
-            // if index + 1 == playerIds.size()
-                // index resets to 0
-            // assign next judge at index + 1
-            topScore = 10;
+                topScore = winner.getScore();
+            }
+            // Check for gameover
+            if (topScore != 10) {
+                // Rotate next judge
+                int nextJudge = index+1;
+                // if index + 1 == playerIds.size()
+                if (nextJudge == playerIds.size()) {
+                    nextJudge = 0;
+                }
+                judge = playerRepository.findById(playerIds.get(nextJudge));
+                LOGGER.info("Next judge is "+ judge.get().getName());
+            } else {
+                LOGGER.info("Game Over! "+ winner.getName() + " wins!!");
+            }
         }
     }
 }
