@@ -76,6 +76,7 @@ public class PlayerService {
         if (player.isEmpty()) {
             throw new InformationNotFoundException("Player with id " + playerId + " does not exists.");
         } else {
+            playerRepository.deleteById(playerId);
             return "Player with id " + playerId + " deleted.";
         }
     }
