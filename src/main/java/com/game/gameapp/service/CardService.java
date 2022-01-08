@@ -46,10 +46,10 @@ public class CardService {
         }
     }
 
-    public String deleteCard(Long cardId, Card cardObject) {
+    public String deleteCard(Long cardId) {
         Optional<Card> card = cardRepository.findById(cardId);
         if (card.isEmpty()) {
-            throw new InformationNotFoundException("Card with id " + cardObject.getId() + " does not exist.");
+            throw new InformationNotFoundException("Card with id " + cardId + " does not exist.");
         } else {
             cardRepository.deleteById(cardId);
             return "Card with id " + cardId + " deleted.";
