@@ -14,14 +14,9 @@ public class Card {
     private String text;
 
     @Column
-    private boolean isCustom;
+    private boolean custom;
 
     public Card() {
-    }
-
-    public Card(String text) {
-        this.text = text;
-        isCustom = true;
     }
 
     public Long getId() {
@@ -36,11 +31,11 @@ public class Card {
         this.text = text;
     }
 
-    public boolean isCustom() {
-        return isCustom;
+    public boolean getCustom() {
+        return custom;
     }
 
     public void setCustom(boolean custom) {
-        isCustom = custom;
+        this.custom = custom;
     }
 }
