@@ -45,4 +45,14 @@ public class CardService {
             throw new InformationNotFoundException("Card with id " + cardObject.getId() + " does not exist.");
         }
     }
+
+    public String deleteCard(Long cardId, Card cardObject) {
+        Optional<Card> card = cardRepository.findById(cardId);
+        if (card.isEmpty()) {
+            throw new InformationNotFoundException("Card with id " + cardObject.getId() + " does not exist.");
+        } else {
+            cardRepository.deleteById(cardId);
+            return "Card with id " + cardId + " deleted.";
+        }
+    }
 }
