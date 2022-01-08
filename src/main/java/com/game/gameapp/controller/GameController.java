@@ -1,15 +1,12 @@
 package com.game.gameapp.controller;
 
-import com.game.gameapp.model.Player;
 import com.game.gameapp.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.logging.Logger;
 
@@ -27,10 +24,6 @@ public class GameController {
     @PostMapping(path="/play")
     public void playGame(LinkedHashMap<String, ArrayList<Long>> players) {
         LOGGER.info("Calling playGame from game controller.");
-        // checks for minimum number of players
-//        if (players.size() >= 3) {
-//            gameService.playGame(players);
-//        }
         gameService.playGame(players);
     }
 }
