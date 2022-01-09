@@ -67,4 +67,6 @@ public class PlayerController {
         LOGGER.info("Calling playGame method from player controller.");
         playerService.playGame(players);
     }
+
+    // http://localhost:9092/api/player/{playerId}/card/{cardId}
 }

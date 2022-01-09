@@ -11,8 +11,8 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
-public class CardService {
-    private static final Logger LOGGER = Logger.getLogger(CardService.class.getName());
+public class CustomCardService {
+    private static final Logger LOGGER = Logger.getLogger(CustomCardService.class.getName());
     private CustomCardRepository customCardRepository;
 
     @Autowired

@@ -3,16 +3,18 @@ package com.game.gameapp.model;
 import javax.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Table(name = "card")
 public class Card {
     @Id
     @Column
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "card_generator")
-    @SequenceGenerator(name="card_generator", sequenceName = "card_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
     private String text;
+
+    public Card() {
+    }
 
     public Long getId() {
         return id;
