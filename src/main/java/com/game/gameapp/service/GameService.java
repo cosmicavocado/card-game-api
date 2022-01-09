@@ -6,6 +6,7 @@ import com.game.gameapp.model.CustomCard;
 import com.game.gameapp.model.Player;
 import com.game.gameapp.model.Prompt;
 import com.game.gameapp.repository.CardRepository;
+import com.game.gameapp.repository.CustomCardRepository;
 import com.game.gameapp.repository.PlayerRepository;
 import com.game.gameapp.repository.PromptRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,17 +14,24 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 @Service
 public class GameService {
     private static final Logger LOGGER = Logger.getLogger(GameService.class.getName());
     private static ArrayList<CustomCard> customCards;
-    private static ArrayList<Card> deck;
-    private static ArrayList<Prompt> prompts;
+    private static List<Object> deck;
+    private static List<Prompt> prompts;
     private static Random rng = new Random();
     private PlayerRepository playerRepository;
-    private CardRepository cardRepository;
     private PromptRepository promptRepository;
+    private CardRepository cardRepository;
+    private CustomCardRepository customCardRepository;
+
+    @Autowired
+    public void setCustomCardRepository(CustomCardRepository customCardRepository) {
+        this.customCardRepository = customCardRepository;
+    }
 
     @Autowired
     public void setPlayerRepository(PlayerRepository playerRepository) {
@@ -38,18 +46,6 @@ public class GameService {
     @Autowired
     public void setPromptRepository(PromptRepository promptRepository) {
         this.promptRepository = promptRepository;
-    }
-
-    public void drawUpToTen(Long playerId) {
-        Optional<Player> player = playerRepository.findById(playerId);
-        if (player.isPresent() && player.get().getHand().size()<10) {
-            do {
-                int n = rng.nextInt(customCards.size());
-                CustomCard newCustomCard = customCards.get(n);
-                player.get().setCard(newCustomCard);
-                customCards.remove(n);
-            } while(player.get().hand.size()<10);
-        }
     }
 
     public ArrayList<Player> newGame(ArrayList<Long> playerIds) {
@@ -73,7 +69,24 @@ public class GameService {
         return currentPlayers;
     }
 
-    // take an arrayList of players/playerIds
+    public void drawUpToTen(Long playerId) {
+        Optional<Player> player = playerRepository.findById(playerId);
+        if (player.isPresent() && player.get().getHand().size()<10) {
+            do {
+                int n = rng.nextInt(customCards.size());
+                CustomCard newCustomCard = customCards.get(n);
+                player.get().setCard(newCustomCard);
+                customCards.remove(n);
+            } while(player.get().hand.size()<10);
+        }
+    }
+
+    public List<Object> createDeck(){
+        List<CustomCard> customCards = customCardRepository.findAll();
+        List<Card> cards = cardRepository.findAll();
+        return List.of(Stream.of(customCards, cards).toArray());
+    }
+
     public void playGame(LinkedHashMap<String, ArrayList<Long>> players) {
         LOGGER.info("Calling playGame method from game service.");
         // Saves playerIds from HashMap to ArrayList
@@ -83,9 +96,10 @@ public class GameService {
         ArrayList<Player> currentPlayers = newGame(playerIds);
 
         // create deck & prompts
-        customCards = (ArrayList<CustomCard>) cardRepository.findAll();
-        prompts = (ArrayList<Prompt>) promptRepository.findAll();
-
+        deck = createDeck();
+        prompts = promptRepository.findAll();
+        System.out.println("Size of deck is: "+ deck.size());
+        System.out.println("Size of prompts deck is: "+ deck.size());
 
         // use rng to pick random player for judge
         int index = rng.nextInt(currentPlayers.size());
