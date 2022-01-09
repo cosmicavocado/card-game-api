@@ -81,10 +81,23 @@ public class GameService {
         }
     }
 
-    public List<Object> createDeck(){
+    public List<Object> createDeck() {
         List<CustomCard> customCards = customCardRepository.findAll();
         List<Card> cards = cardRepository.findAll();
-        return List.of(Stream.of(customCards, cards).toArray());
+        if (cards.isEmpty()) {
+            throw new InformationNotFoundException("Please ensure the cards are loaded into the card table.");
+        } else {
+            return List.of(Stream.of(customCards, cards).toArray());
+        }
+    }
+
+    public List<Prompt> createPrompts() {
+       List<Prompt> prompts = promptRepository.findAll();
+        if (prompts.isEmpty()) {
+            throw new InformationNotFoundException("Please ensure the prompts are loaded into the prompt table.");
+        } else {
+            return prompts;
+        }
     }
 
     public void playGame(LinkedHashMap<String, ArrayList<Long>> players) {
@@ -97,9 +110,7 @@ public class GameService {
 
         // create deck & prompts
         deck = createDeck();
-        prompts = promptRepository.findAll();
-        System.out.println("Size of deck is: "+ deck.size());
-        System.out.println("Size of prompts deck is: "+ prompts.size());
+        prompts = createPrompts();
 
         // use rng to pick random player for judge
         int index = rng.nextInt(currentPlayers.size());
