@@ -14,15 +14,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static sun.tools.jstat.Alignment.keySet;
 
 @Service
 public class GameService {
     private static final Logger LOGGER = Logger.getLogger(GameService.class.getName());
-    private static ArrayList<CustomCard> customCards;
     private static List<Object> deck;
     private static List<Prompt> prompts;
     private static Random rng = new Random();
@@ -76,10 +73,10 @@ public class GameService {
         Optional<Player> player = playerRepository.findById(playerId);
         if (player.isPresent() && player.get().getHand().size()<10) {
             do {
-                int n = rng.nextInt(customCards.size());
-                CustomCard newCustomCard = customCards.get(n);
-                player.get().setCard(newCustomCard);
-                customCards.remove(n);
+                int n = rng.nextInt(deck.size());
+                Card card = (Card) deck.get(n);
+                player.get().setCard(card);
+                deck.remove(n);
             } while(player.get().hand.size()<10);
         }
     }
@@ -110,7 +107,6 @@ public class GameService {
         return judge;
     }
 
-    //TODO adjust prompt use
     public Prompt drawPrompt() {
         int n = rng.nextInt(prompts.size());
         Prompt prompt = prompts.get(n);
@@ -156,6 +152,17 @@ public class GameService {
         return topScore;
     }
 
+    public Player nextJudge(Player thisJudge, List<Player> currentPlayers) {
+        // find index of next judge
+        int nextJudge = (int) (thisJudge.getId()+1);
+        // if last player in list was the judge
+        if (nextJudge == currentPlayers.size()) {
+            // the next judge will be first player
+            nextJudge = 0;
+        }
+        return currentPlayers.get(nextJudge);
+    }
+
     public void playGame(LinkedHashMap<String, ArrayList<Long>> players) {
         LOGGER.info("Calling playGame method from game service.");
         // Saves playerIds from HashMap to ArrayList
@@ -177,8 +184,9 @@ public class GameService {
 
         // while topScore != 10, play game
         while(topScore != 10) {
-            //TODO adjust prompt use
+            // draw prompt
             Prompt prompt = drawPrompt();
+            LOGGER.info("Judge " + judge +" drew prompt "+ prompt);
 
             // players play response and draw up to 10
             LinkedHashMap<Card,Player> responses = getResponses(currentPlayers, judge);
@@ -188,23 +196,18 @@ public class GameService {
 
             // score tracking is updated
             topScore = checkScores(winner, topScore);
-            
-            // If game over != true
+
+            // If game is not over
             if (topScore != 10) {
                 LOGGER.info(winner.getName()+" wins round " + round + "! Their new score is " + winner.getScore());
-                // Rotate next judge
-                int nextJudge = (int) (judge.getId()+1);
-                // if last player in list was the judge
-                if (nextJudge == currentPlayers.size()) {
-                    // the next judge will be first player
-                    nextJudge = 0;
-                }
-                judge = playerRepository.getById(playerIds.get(nextJudge));
+                // rotate next judge
+                judge = nextJudge(judge, currentPlayers);
                 LOGGER.info("Next judge is "+ judge.getName());
             } else {
                 LOGGER.info("Game Over! "+ winner.getName() + " wins!!");
             }
             LOGGER.info("End of round "+ round + ".\n");
+            // increment round tracker
             round++;
         }
     }

@@ -1,7 +1,7 @@
 package com.game.gameapp.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "player")
@@ -15,7 +15,7 @@ public class Player {
     private String name;
 
     @Transient
-    public ArrayList<CustomCard> hand;
+    public List<Card> hand;
 
     @Transient
     private int score;
@@ -39,16 +39,16 @@ public class Player {
         this.name = name;
     }
 
-    public ArrayList<CustomCard> getHand() {
+    public List<Card> getHand() {
         return hand;
     }
 
-    public void setHand(ArrayList<CustomCard> hand) {
+    public void setHand(List<Card> hand) {
         this.hand = hand;
     }
 
-    public void setCard(CustomCard customCard) {
-        this.hand.add(customCard);
+    public void setCard(Card Card) {
+        this.hand.add(Card);
     }
 
     public int getScore() {
