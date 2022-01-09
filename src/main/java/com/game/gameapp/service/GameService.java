@@ -100,7 +100,7 @@ public class GameService {
         }
     }
 
-    public Player chooseJudge(List<Player> currentPlayers) {
+    public Player firstJudge(List<Player> currentPlayers) {
         int index = RNG.nextInt(currentPlayers.size());
         Player judge = currentPlayers.get(index);
         LOGGER.info("The first judge is " + judge.getName());
@@ -175,8 +175,8 @@ public class GameService {
         deck = createDeck();
         prompts = createPrompts();
 
-        // use RNG to pick random player for judge
-        Player judge = chooseJudge(currentPlayers);
+        // use RNG to pick random first judge
+        Player judge = firstJudge(currentPlayers);
 
         // initialize tracking variables
         int topScore = 0;
