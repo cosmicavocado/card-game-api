@@ -34,13 +34,13 @@ This is a Cards Against Humanity inspired game API.
 - Add a name so that I can be uniquely identified while playing
 - Draw up to 10 cards so that I have a full hand of 10 cards
 - Draw a prompt so I can judge the responses
-- Play a card so my response can be judged
-- Choose winning card so that the winning player can be awarded a point
+- Play a customCard so my response can be judged
+- Choose winning customCard so that the winning player can be awarded a point
 - See player scores so that I can keep track of who is winning
 - See a message announcing the winning player so that all players know who won
-- Create a custom card so I can personalize the game
-- Update a custom card so I can make changes
-- Delete a custom card so I can remove cards from the custom card pool
+- Create a custom customCard so I can personalize the game
+- Update a custom customCard so I can make changes
+- Delete a custom customCard so I can remove cards from the custom customCard pool
 - Reset the game so that I don’t have to reload the application just to begin a new game
 
 ## ERD
@@ -58,10 +58,10 @@ This is a Cards Against Humanity inspired game API.
 | DELETE       | /api/player/{playerId}                | None         | Delete player                          |
 | GET          | /api/player/{playerId}/draw           | None         | Randomly draw up to 10 cards from list |
 | GET          | /api/player/{playerId}/cards          | None         | Get all cards                          |
-| GET          | /api/player/{playerId}/cards/{cardId} | None         | Get single card                        |
-| POST         | /api/card                             | Card text    | Add custom card to card list           |
-| PUT          | /api/card/{cardId}                    | Card text    | Update custom card in card list        |
-| DELETE       | /api/card/{cardId}                    | None         | Delete custom card from card list      |
+| GET          | /api/player/{playerId}/cards/{cardId} | None         | Get single customCard                        |
+| POST         | /api/customCard                             | Card text    | Add custom customCard to customCard list           |
+| PUT          | /api/customCard/{cardId}                    | Card text    | Update custom customCard in customCard list        |
+| DELETE       | /api/customCard/{cardId}                    | None         | Delete custom customCard from customCard list      |
 | GET          | /api/prompt                           | None         | Get single prompt                      |
 | GET          | /api/prompt/{promptId}                | None         | Get all prompts                        |
 | GET          | /api/play                             | None         | Start the game                         |

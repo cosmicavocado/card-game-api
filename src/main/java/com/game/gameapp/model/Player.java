@@ -15,7 +15,7 @@ public class Player {
     private String name;
 
     @Transient
-    public ArrayList<Card> hand;
+    public ArrayList<CustomCard> hand;
 
     @Transient
     private int score;
@@ -39,16 +39,16 @@ public class Player {
         this.name = name;
     }
 
-    public ArrayList<Card> getHand() {
+    public ArrayList<CustomCard> getHand() {
         return hand;
     }
 
-    public void setHand(ArrayList<Card> hand) {
+    public void setHand(ArrayList<CustomCard> hand) {
         this.hand = hand;
     }
 
-    public void setCard(Card card) {
-        this.hand.add(card);
+    public void setCard(CustomCard customCard) {
+        this.hand.add(customCard);
     }
 
     public int getScore() {

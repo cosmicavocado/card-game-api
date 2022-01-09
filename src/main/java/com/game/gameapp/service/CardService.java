@@ -2,7 +2,7 @@ package com.game.gameapp.service;
 
 import com.game.gameapp.exception.InformationExistsException;
 import com.game.gameapp.exception.InformationNotFoundException;
-import com.game.gameapp.model.Card;
+import com.game.gameapp.model.CustomCard;
 import com.game.gameapp.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,34 +21,34 @@ public class CardService {
     }
 
     //TODO does not generate unique ID when database already has cards??
-    public Card createCard(Card cardObject) {
+    public CustomCard createCard(CustomCard customCardObject) {
         LOGGER.info("Calling create card method from card service.");
-        Card card = cardRepository.findByText(cardObject.getText());
-        if (card != null) {
-            throw new InformationExistsException("Card with text \"" + cardObject.getText() + "\" already exists.");
+        CustomCard customCard = cardRepository.findByText(customCardObject.getText());
+        if (customCard != null) {
+            throw new InformationExistsException("Card with text \"" + customCardObject.getText() + "\" already exists.");
         } else {
-            return cardRepository.save(cardObject);
+            return cardRepository.save(customCardObject);
         }
     }
 
-    public Card updateCard(Long cardId, Card cardObject) {
+    public CustomCard updateCard(Long cardId, CustomCard customCardObject) {
         LOGGER.info("Calling updateCard method from card service.");
-        Optional<Card> card = cardRepository.findById(cardId);
+        Optional<CustomCard> card = cardRepository.findById(cardId);
         if (card.isPresent()) {
-            if (cardObject.getText().equals(card.get().getText())) {
-                throw new InformationExistsException("Card with text " + cardObject.getText() + " already exists.");
+            if (customCardObject.getText().equals(card.get().getText())) {
+                throw new InformationExistsException("Card with text " + customCardObject.getText() + " already exists.");
             } else {
-                card.get().setText(cardObject.getText());
+                card.get().setText(customCardObject.getText());
                 return cardRepository.save(card.get());
             }
         } else {
-            throw new InformationNotFoundException("Card with id " + cardObject.getId() + " does not exist.");
+            throw new InformationNotFoundException("Card with id " + customCardObject.getId() + " does not exist.");
         }
     }
 
     public String deleteCard(Long cardId) {
         LOGGER.info("Calling deleteCard method from card service.");
-        Optional<Card> card = cardRepository.findById(cardId);
+        Optional<CustomCard> card = cardRepository.findById(cardId);
         if (card.isEmpty()) {
             throw new InformationNotFoundException("Card with id " + cardId + " does not exist.");
         } else {

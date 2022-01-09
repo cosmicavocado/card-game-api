@@ -1,6 +1,7 @@
 package com.game.gameapp.service;
 
 import com.game.gameapp.model.Card;
+import com.game.gameapp.model.CustomCard;
 import com.game.gameapp.model.Player;
 import com.game.gameapp.model.Prompt;
 import com.game.gameapp.repository.CardRepository;
@@ -15,7 +16,7 @@ import java.util.logging.Logger;
 @Service
 public class GameService {
     private static final Logger LOGGER = Logger.getLogger(GameService.class.getName());
-    private static ArrayList<Card> deck;
+    private static ArrayList<CustomCard> deck;
     private static ArrayList<Prompt> prompts;
     private static Random rng = new Random();
     private PlayerRepository playerRepository;
@@ -42,8 +43,8 @@ public class GameService {
         if (player.isPresent() && player.get().getHand().size()<10) {
             do {
                 int n = rng.nextInt(deck.size());
-                Card newCard = deck.get(n);
-                player.get().setCard(newCard);
+                CustomCard newCustomCard = (CustomCard) deck.get(n);
+                player.get().setCard(newCustomCard);
                 deck.remove(n);
             } while(player.get().hand.size()<10);
         }
@@ -72,8 +73,9 @@ public class GameService {
             }
         }
         // create deck & prompts
-        deck = (ArrayList<Card>) cardRepository.findAll();
+        deck = (ArrayList<CustomCard>) cardRepository.findAll();
         prompts = (ArrayList<Prompt>) promptRepository.findAll();
+
 
         // use rng to pick random player for judge
         int index = rng.nextInt(currentPlayers.size());
@@ -85,7 +87,7 @@ public class GameService {
         // while topScore != 10, loop game
         while(topScore != 10) {
             // will change if time***
-            ArrayList<Card> responses = new ArrayList<>();
+            ArrayList<CustomCard> responses = new ArrayList<>();
             ArrayList<Player> responsePlayer = new ArrayList<>();
 
             // judge pulls prompt
@@ -99,10 +101,10 @@ public class GameService {
                 drawUpToTen(player.getId()); // keeps all players at max hand size
                 // if player is judge this round
                 if(!player.equals(judge)) {
-                    Card randomCard = player.hand.get(rng.nextInt(10));
-                    responses.add(randomCard);
+                    CustomCard randomCustomCard = player.hand.get(rng.nextInt(10));
+                    responses.add(randomCustomCard);
                     responsePlayer.add(player);
-                    LOGGER.info(player.getName() + " played " + randomCard.getText());
+                    LOGGER.info(player.getName() + " played " + randomCustomCard.getText());
                 }
             }
 

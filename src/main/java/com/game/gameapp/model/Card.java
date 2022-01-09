@@ -3,7 +3,7 @@ package com.game.gameapp.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "card")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Card {
     @Id
     @Column
@@ -12,9 +12,6 @@ public class Card {
 
     @Column
     private String text;
-
-    public Card() {
-    }
 
     public Long getId() {
         return id;
@@ -27,5 +24,4 @@ public class Card {
     public void setText(String text) {
         this.text = text;
     }
-
 }

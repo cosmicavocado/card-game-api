@@ -1,6 +1,6 @@
 package com.game.gameapp.controller;
 
-import com.game.gameapp.model.Card;
+import com.game.gameapp.model.CustomCard;
 import com.game.gameapp.service.CardService;
 import com.game.gameapp.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +21,16 @@ public class CardController {
 
     // http://localhost:9092/api/card
     @PostMapping(path="/card")
-    public Card createCard(@RequestBody Card cardObject) {
+    public CustomCard createCard(@RequestBody CustomCard customCardObject) {
         LOGGER.info("Calling createCard method from card controller");
-        return cardService.createCard(cardObject);
+        return cardService.createCard(customCardObject);
     }
 
     // http://localhost:9092/api/card/{cardId}
     @PutMapping(path="card/{cardId}")
-    public Card updateCard(@PathVariable Long cardId, @RequestBody Card cardObject) {
+    public CustomCard updateCard(@PathVariable Long cardId, @RequestBody CustomCard customCardObject) {
         LOGGER.info("Calling createCard method from card controller");
-        return cardService.updateCard(cardId, cardObject);
+        return cardService.updateCard(cardId, customCardObject);
     }
 
     // http://localhost:9092/api/card/{cardId}
