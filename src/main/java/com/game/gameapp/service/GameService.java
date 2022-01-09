@@ -1,5 +1,6 @@
 package com.game.gameapp.service;
 
+import com.game.gameapp.exception.InformationNotFoundException;
 import com.game.gameapp.model.Card;
 import com.game.gameapp.model.CustomCard;
 import com.game.gameapp.model.Player;
@@ -51,8 +52,8 @@ public class GameService {
         }
     }
 
-    public ArrayList<Player> setGame(ArrayList<Long> playerIds) {
-        LOGGER.info("Calling setGame method from game service.");
+    public ArrayList<Player> newGame(ArrayList<Long> playerIds) {
+        LOGGER.info("Calling newGame method from game service.");
         ArrayList<Player> currentPlayers = new ArrayList<>();
         for (Long playerId : playerIds) {
             Optional<Player> player = playerRepository.findById(playerId);
@@ -65,6 +66,8 @@ public class GameService {
                 player.get().setHand(new ArrayList<>());
                 // set initial score to 0
                 player.get().setScore(0);
+            } else {
+                throw new InformationNotFoundException("Please add only valid players and try again.");
             }
         }
         return currentPlayers;
@@ -76,8 +79,8 @@ public class GameService {
         // Saves playerIds from HashMap to ArrayList
         ArrayList<Long> playerIds = players.get("players");
 
-        // Sets up new game
-        ArrayList<Player> currentPlayers = setGame(playerIds);
+        // Sets up new game & checks for valid players
+        ArrayList<Player> currentPlayers = newGame(playerIds);
 
         // create deck & prompts
         customCards = (ArrayList<CustomCard>) cardRepository.findAll();
