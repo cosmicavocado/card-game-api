@@ -99,7 +99,7 @@ public class GameService {
         deck = createDeck();
         prompts = promptRepository.findAll();
         System.out.println("Size of deck is: "+ deck.size());
-        System.out.println("Size of prompts deck is: "+ deck.size());
+        System.out.println("Size of prompts deck is: "+ prompts.size());
 
         // use rng to pick random player for judge
         int index = rng.nextInt(currentPlayers.size());

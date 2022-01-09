@@ -20,7 +20,6 @@ public class CardService {
         this.customCardRepository = customCardRepository;
     }
 
-    //TODO does not generate unique ID when database already has cards??
     public CustomCard createCard(CustomCard customCardObject) {
         LOGGER.info("Calling create card method from card service.");
         CustomCard customCard = customCardRepository.findByText(customCardObject.getText());
@@ -33,16 +32,16 @@ public class CardService {
 
     public CustomCard updateCard(Long cardId, CustomCard customCardObject) {
         LOGGER.info("Calling updateCard method from card service.");
-        Optional<CustomCard> card = customCardRepository.findById(cardId);
-        if (card.isPresent()) {
-            if (customCardObject.getText().equals(card.get().getText())) {
+        Optional<CustomCard> customCard = customCardRepository.findById(cardId);
+        if (customCard.isEmpty()) {
+            throw new InformationNotFoundException("Card with id " + cardId + " does not exist.");
+        } else {
+            if (customCardObject.getText().equals(customCard.get().getText())) {
                 throw new InformationExistsException("Card with text " + customCardObject.getText() + " already exists.");
             } else {
-                card.get().setText(customCardObject.getText());
-                return customCardRepository.save(card.get());
+                customCard.get().setText(customCardObject.getText());
+                return customCardRepository.save(customCard.get());
             }
-        } else {
-            throw new InformationNotFoundException("Card with id " + customCardObject.getId() + " does not exist.");
         }
     }
 
