@@ -145,6 +145,17 @@ public class GameService {
         return winner;
     }
 
+    public int checkScores(Player winner, int topScore) {
+        // winning player score +1
+        winner.setScore(winner.getScore()+1);
+        // if player score > topScore
+        if (winner.getScore() > topScore) {
+            // topScore = player score
+            topScore = winner.getScore();
+        }
+        return topScore;
+    }
+
     public void playGame(LinkedHashMap<String, ArrayList<Long>> players) {
         LOGGER.info("Calling playGame method from game service.");
         // Saves playerIds from HashMap to ArrayList
@@ -175,8 +186,9 @@ public class GameService {
             // judge chooses the best response for the round
             Player winner = getWinner(responses);
 
-            // winning player score +1
-
+            // score tracking is updated
+            topScore = checkScores(winner, topScore);
+            
             // If game over != true
             if (topScore != 10) {
                 LOGGER.info(winner.getName()+" wins round " + round + "! Their new score is " + winner.getScore());
