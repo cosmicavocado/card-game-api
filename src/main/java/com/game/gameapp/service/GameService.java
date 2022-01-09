@@ -16,7 +16,8 @@ import java.util.logging.Logger;
 @Service
 public class GameService {
     private static final Logger LOGGER = Logger.getLogger(GameService.class.getName());
-    private static ArrayList<CustomCard> deck;
+    private static ArrayList<CustomCard> customCards;
+    private static ArrayList<Card> deck;
     private static ArrayList<Prompt> prompts;
     private static Random rng = new Random();
     private PlayerRepository playerRepository;
@@ -42,23 +43,17 @@ public class GameService {
         Optional<Player> player = playerRepository.findById(playerId);
         if (player.isPresent() && player.get().getHand().size()<10) {
             do {
-                int n = rng.nextInt(deck.size());
-                CustomCard newCustomCard = (CustomCard) deck.get(n);
+                int n = rng.nextInt(customCards.size());
+                CustomCard newCustomCard = customCards.get(n);
                 player.get().setCard(newCustomCard);
-                deck.remove(n);
+                customCards.remove(n);
             } while(player.get().hand.size()<10);
         }
     }
 
-    // take an arrayList of players/playerIds
-    public void playGame(LinkedHashMap<String, ArrayList<Long>> players) {
-        LOGGER.info("Calling playGame method from service.");
-        // Empty list to store player objects
+    public ArrayList<Player> setGame(ArrayList<Long> playerIds) {
+        LOGGER.info("Calling setGame method from game service.");
         ArrayList<Player> currentPlayers = new ArrayList<>();
-        // Saves playerIds from HashMap to ArrayList
-        ArrayList<Long> playerIds = players.get("players");
-
-        // For all playerIds
         for (Long playerId : playerIds) {
             Optional<Player> player = playerRepository.findById(playerId);
             // Check that player exists
@@ -72,8 +67,20 @@ public class GameService {
                 player.get().setScore(0);
             }
         }
+        return currentPlayers;
+    }
+
+    // take an arrayList of players/playerIds
+    public void playGame(LinkedHashMap<String, ArrayList<Long>> players) {
+        LOGGER.info("Calling playGame method from game service.");
+        // Saves playerIds from HashMap to ArrayList
+        ArrayList<Long> playerIds = players.get("players");
+
+        // Sets up new game
+        ArrayList<Player> currentPlayers = setGame(playerIds);
+
         // create deck & prompts
-        deck = (ArrayList<CustomCard>) cardRepository.findAll();
+        customCards = (ArrayList<CustomCard>) cardRepository.findAll();
         prompts = (ArrayList<Prompt>) promptRepository.findAll();
 
 
