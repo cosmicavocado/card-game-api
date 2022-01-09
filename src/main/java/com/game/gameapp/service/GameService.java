@@ -100,6 +100,21 @@ public class GameService {
         }
     }
 
+    public Player chooseJudge(List<Player> currentPlayers) {
+        int index = rng.nextInt(currentPlayers.size());
+        Player judge = currentPlayers.get(index);
+        LOGGER.info("The first judge is " + judge.getName());
+        return judge;
+    }
+
+    //TODO adjust prompt use
+    public Prompt drawPrompt() {
+        int n = rng.nextInt(prompts.size());
+        Prompt prompt = prompts.get(n);
+        prompts.remove(n);
+        return prompt;
+    }
+
     public void playGame(LinkedHashMap<String, ArrayList<Long>> players) {
         LOGGER.info("Calling playGame method from game service.");
         // Saves playerIds from HashMap to ArrayList
@@ -113,23 +128,21 @@ public class GameService {
         prompts = createPrompts();
 
         // use rng to pick random player for judge
-        int index = rng.nextInt(currentPlayers.size());
-        Player judge = currentPlayers.get(index);
-        LOGGER.info("The first judge is " + judge.getName());
+        Player judge = chooseJudge(currentPlayers);
+
+        // initialize tracking variables
         int topScore = 0;
         int round = 1;
 
-        // while topScore != 10, loop game
+        // while topScore != 10, play game
         while(topScore != 10) {
-            // will change if time***
             ArrayList<CustomCard> responses = new ArrayList<>();
             ArrayList<Player> responsePlayer = new ArrayList<>();
 
+            //TODO adjust prompt use
+
             // judge pulls prompt
-            int n = rng.nextInt(prompts.size());
-            Prompt prompt = prompts.get(n);
-            prompts.remove(n);
-            LOGGER.info(prompt.getText() + " pulled by judge " + judge.getName());
+            Prompt prompt = drawPrompt();
 
             // loop all players for this round
             for(Player player : currentPlayers) {
@@ -144,7 +157,7 @@ public class GameService {
             }
 
             // judge picks winning response (random to simulate gameplay)
-            n = rng.nextInt(responses.size());
+            int n = rng.nextInt(responses.size());
             responses.get(n);
             Player winner = responsePlayer.get(n);
 
@@ -159,9 +172,10 @@ public class GameService {
             if (topScore != 10) {
                 LOGGER.info(winner.getName()+" wins round " + round + "! Their new score is " + winner.getScore());
                 // Rotate next judge
-                int nextJudge = index+1;
-                // if index + 1 == playerIds.size()
-                if (nextJudge == playerIds.size()) {
+                int nextJudge = (int) (judge.getId()+1);
+                // if last player in list was the judge
+                if (nextJudge == currentPlayers.size()) {
+                    // the next judge will be first player
                     nextJudge = 0;
                 }
                 judge = playerRepository.getById(playerIds.get(nextJudge));
