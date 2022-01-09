@@ -14,7 +14,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static sun.tools.jstat.Alignment.keySet;
 
 @Service
 public class GameService {
@@ -115,6 +118,33 @@ public class GameService {
         return prompt;
     }
 
+    public LinkedHashMap<Card,Player> getResponses(List<Player> currentPlayers, Player judge) {
+        LinkedHashMap<Card, Player> responses = new LinkedHashMap<>();
+        // loop all players for this round
+        for(Player player : currentPlayers) {
+            drawUpToTen(player.getId()); // keeps all players at max hand size
+            // if player is judge this round
+            if(!player.equals(judge)) {
+                Card card = player.hand.get(rng.nextInt(10));
+                responses.put(card, player);
+                LOGGER.info(player.getName() + " played " + card.getText());
+            }
+        }
+        return responses;
+    }
+
+    public Player getWinner(LinkedHashMap<Card,Player> responses) {
+        // judge picks winning response
+        int n = rng.nextInt(responses.size());
+        // Get keys from linkedHashMap
+        List<Card> respKeyList = new ArrayList<>(responses.keySet());
+        // Get winning card using index n
+        Card bestResponse = respKeyList.get(n);
+        Player winner = responses.get(bestResponse);
+        LOGGER.info(winner.getName()+" played "+ bestResponse+" this round!");
+        return winner;
+    }
+
     public void playGame(LinkedHashMap<String, ArrayList<Long>> players) {
         LOGGER.info("Calling playGame method from game service.");
         // Saves playerIds from HashMap to ArrayList
@@ -136,38 +166,17 @@ public class GameService {
 
         // while topScore != 10, play game
         while(topScore != 10) {
-            ArrayList<CustomCard> responses = new ArrayList<>();
-            ArrayList<Player> responsePlayer = new ArrayList<>();
-
             //TODO adjust prompt use
-
-            // judge pulls prompt
             Prompt prompt = drawPrompt();
 
-            // loop all players for this round
-            for(Player player : currentPlayers) {
-                drawUpToTen(player.getId()); // keeps all players at max hand size
-                // if player is judge this round
-                if(!player.equals(judge)) {
-                    CustomCard randomCustomCard = player.hand.get(rng.nextInt(10));
-                    responses.add(randomCustomCard);
-                    responsePlayer.add(player);
-                    LOGGER.info(player.getName() + " played " + randomCustomCard.getText());
-                }
-            }
+            // players play response and draw up to 10
+            LinkedHashMap<Card,Player> responses = getResponses(currentPlayers, judge);
 
-            // judge picks winning response (random to simulate gameplay)
-            int n = rng.nextInt(responses.size());
-            responses.get(n);
-            Player winner = responsePlayer.get(n);
+            // judge chooses the best response for the round
+            Player winner = getWinner(responses);
 
             // winning player score +1
-            winner.setScore(winner.getScore()+1);
-            // if player score > topScore
-            if (winner.getScore() > topScore) {
-                // topScore = player score
-                topScore = winner.getScore();
-            }
+
             // If game over != true
             if (topScore != 10) {
                 LOGGER.info(winner.getName()+" wins round " + round + "! Their new score is " + winner.getScore());
