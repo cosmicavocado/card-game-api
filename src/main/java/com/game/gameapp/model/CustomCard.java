@@ -7,8 +7,7 @@ import javax.persistence.*;
 public class CustomCard {
     @Id
     @Column
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "card_generator")
-    @SequenceGenerator(name="card_generator", sequenceName = "card_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column

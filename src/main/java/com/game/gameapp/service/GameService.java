@@ -143,7 +143,7 @@ public class GameService {
         // Get winning card using index n
         Card bestResponse = respKeyList.get(n);
         Player winner = responses.get(bestResponse);
-        LOGGER.info(winner.getName()+" played "+ bestResponse+" this round!");
+        LOGGER.info(winner.getName()+" played " + bestResponse.getText() + " this round!");
         return winner;
     }
 
