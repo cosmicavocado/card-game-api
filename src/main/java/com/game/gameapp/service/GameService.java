@@ -22,7 +22,7 @@ public class GameService {
     private static final Logger LOGGER = Logger.getLogger(GameService.class.getName());
     private static List<Object> deck;
     private static List<Prompt> prompts;
-    private static Random rng = new Random();
+    private static final Random RNG = new Random();
     private PlayerRepository playerRepository;
     private PromptRepository promptRepository;
     private CardRepository cardRepository;
@@ -48,9 +48,9 @@ public class GameService {
         this.promptRepository = promptRepository;
     }
 
-    public ArrayList<Player> newGame(ArrayList<Long> playerIds) {
+    public List<Player> newGame(List<Long> playerIds) {
         LOGGER.info("Calling newGame method from game service.");
-        ArrayList<Player> currentPlayers = new ArrayList<>();
+        List<Player> currentPlayers = new ArrayList<>();
         for (Long playerId : playerIds) {
             Optional<Player> player = playerRepository.findById(playerId);
             // Check that player exists
@@ -73,7 +73,7 @@ public class GameService {
         Optional<Player> player = playerRepository.findById(playerId);
         if (player.isPresent() && player.get().getHand().size()<10) {
             do {
-                int n = rng.nextInt(deck.size());
+                int n = RNG.nextInt(deck.size());
                 Card card = (Card) deck.get(n);
                 player.get().setCard(card);
                 deck.remove(n);
@@ -101,14 +101,14 @@ public class GameService {
     }
 
     public Player chooseJudge(List<Player> currentPlayers) {
-        int index = rng.nextInt(currentPlayers.size());
+        int index = RNG.nextInt(currentPlayers.size());
         Player judge = currentPlayers.get(index);
         LOGGER.info("The first judge is " + judge.getName());
         return judge;
     }
 
     public Prompt drawPrompt() {
-        int n = rng.nextInt(prompts.size());
+        int n = RNG.nextInt(prompts.size());
         Prompt prompt = prompts.get(n);
         prompts.remove(n);
         return prompt;
@@ -121,7 +121,7 @@ public class GameService {
             drawUpToTen(player.getId()); // keeps all players at max hand size
             // if player is judge this round
             if(!player.equals(judge)) {
-                Card card = player.hand.get(rng.nextInt(10));
+                Card card = player.hand.get(RNG.nextInt(10));
                 responses.put(card, player);
                 LOGGER.info(player.getName() + " played " + card.getText());
             }
@@ -131,7 +131,7 @@ public class GameService {
 
     public Player getWinner(LinkedHashMap<Card,Player> responses) {
         // judge picks winning response
-        int n = rng.nextInt(responses.size());
+        int n = RNG.nextInt(responses.size());
         // Get keys from linkedHashMap
         List<Card> respKeyList = new ArrayList<>(responses.keySet());
         // Get winning card using index n
@@ -166,16 +166,16 @@ public class GameService {
     public void playGame(LinkedHashMap<String, ArrayList<Long>> players) {
         LOGGER.info("Calling playGame method from game service.");
         // Saves playerIds from HashMap to ArrayList
-        ArrayList<Long> playerIds = players.get("players");
+        List<Long> playerIds = players.get("players");
 
         // Sets up new game & checks for valid players
-        ArrayList<Player> currentPlayers = newGame(playerIds);
+        List<Player> currentPlayers = newGame(playerIds);
 
         // create deck & prompts
         deck = createDeck();
         prompts = createPrompts();
 
-        // use rng to pick random player for judge
+        // use RNG to pick random player for judge
         Player judge = chooseJudge(currentPlayers);
 
         // initialize tracking variables
