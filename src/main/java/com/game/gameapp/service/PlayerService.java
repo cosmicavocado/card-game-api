@@ -2,6 +2,7 @@ package com.game.gameapp.service;
 
 import com.game.gameapp.exception.InformationExistsException;
 import com.game.gameapp.exception.InformationNotFoundException;
+import com.game.gameapp.model.Card;
 import com.game.gameapp.model.Player;
 import com.game.gameapp.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,5 +88,9 @@ public class PlayerService {
 
     public void playGame(LinkedHashMap<String, ArrayList<Long>> players) {
         gameService.playGame(players);
+    }
+
+    public Card playCard(Long playerId, int cardIndex) {
+        return gameService.playCard(playerId, cardIndex);
     }
 }

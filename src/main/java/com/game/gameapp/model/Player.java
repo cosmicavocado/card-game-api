@@ -1,6 +1,7 @@
 package com.game.gameapp.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,10 +16,13 @@ public class Player {
     private String name;
 
     @Transient
-    public List<Card> hand;
+    public ArrayList<Card> hand;
 
     @Transient
     private int score;
+
+    @Transient
+    private Card response;
 
     public Player() {
     }
@@ -39,11 +43,11 @@ public class Player {
         this.name = name;
     }
 
-    public List<Card> getHand() {
+    public ArrayList<Card> getHand() {
         return hand;
     }
 
-    public void setHand(List<Card> hand) {
+    public void setHand(ArrayList<Card> hand) {
         this.hand = hand;
     }
 
@@ -59,4 +63,11 @@ public class Player {
         this.score = score;
     }
 
+    public Card getResponse() {
+        return response;
+    }
+
+    public void setResponse(Card response) {
+        this.response = response;
+    }
 }

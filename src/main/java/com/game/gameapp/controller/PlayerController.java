@@ -1,5 +1,6 @@
 package com.game.gameapp.controller;
 
+import com.game.gameapp.model.Card;
 import com.game.gameapp.model.Player;
 import com.game.gameapp.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,5 +69,10 @@ public class PlayerController {
         playerService.playGame(players);
     }
 
-    // http://localhost:9092/api/player/{playerId}/card/{cardId}
+    // http://localhost:9092/api/player/{playerId}/hand/{cardId}
+    @GetMapping(path="/player/{playerId}/hand/{cardId}")
+    public Card playCard(@PathVariable Long playerId, @PathVariable int cardId) {
+        LOGGER.info("Calling playCard method from player controller.");
+        return playerService.playCard(playerId, cardId);
+    }
 }
