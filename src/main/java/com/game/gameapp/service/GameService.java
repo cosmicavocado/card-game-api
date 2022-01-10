@@ -198,7 +198,6 @@ public class GameService {
         // Sets up new game & checks for valid players
         currentPlayers = newGame(playerIds);
         // use RNG to pick random first judge
-        LOGGER.info("Current players size is " + currentPlayers.size() + ".");
         judge = firstJudge();
         // while topScore != 10, play game
         while (topScore != 10) {
@@ -218,7 +217,6 @@ public class GameService {
         winner = getWinner(responses);
         // score tracking is updated
         topScore = checkScores(winner, topScore);
-        LOGGER.info("End round " + round + ".");
         // check for game over condition
         checkGameOver();
     }
