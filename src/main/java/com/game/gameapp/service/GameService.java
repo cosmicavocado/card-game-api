@@ -33,12 +33,6 @@ public class GameService {
     private PlayerRepository playerRepository;
     private PromptRepository promptRepository;
     private CardRepository cardRepository;
-    private CustomCardRepository customCardRepository;
-
-    @Autowired
-    public void setCustomCardRepository(CustomCardRepository customCardRepository) {
-        this.customCardRepository = customCardRepository;
-    }
 
     @Autowired
     public void setPlayerRepository(PlayerRepository playerRepository) {
