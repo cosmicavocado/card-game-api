@@ -104,6 +104,8 @@ We used a kanban board to break our project up into smaller deliverables and mov
 - It runs.
 - It's clean.
 
+![img_2.png](img_2.png)
+
 ## What We Would Do Differently
 
 - ERD design.
