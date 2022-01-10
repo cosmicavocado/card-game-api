@@ -96,6 +96,6 @@ public class PlayerService {
 
     public String viewHand(Long playerId) {
         LOGGER.info("Calling view hand from player service.");
-        return gameService.viewHand(playerId);
+        return gameService.viewHand(playerId).toString();
     }
 }

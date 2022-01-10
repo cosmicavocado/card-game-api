@@ -1,12 +1,10 @@
 package com.game.gameapp.service;
 
-import com.game.gameapp.custom.PlayerResponses;
 import com.game.gameapp.exception.InformationNotFoundException;
 import com.game.gameapp.model.Card;
 import com.game.gameapp.model.Player;
 import com.game.gameapp.model.Prompt;
 import com.game.gameapp.repository.CardRepository;
-import com.game.gameapp.repository.CustomCardRepository;
 import com.game.gameapp.repository.PlayerRepository;
 import com.game.gameapp.repository.PromptRepository;
 import org.springframework.beans.factory.annotation.Autowired;
