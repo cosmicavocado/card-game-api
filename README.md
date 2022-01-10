@@ -83,8 +83,8 @@ We used a kanban board to break our project up into smaller deliverables and mov
 - Create database named "mygameapp"
 - Run card-game-api to generate tables
 - [Import](https://www.pgadmin.org/docs/pgadmin4/development/import_export_data.html) CSVs into pgAdmin
-  - cards.csv > card table
-  - prompts.csv > prompts table
+  - Import cards.csv into card table
+  - Import prompts.csv into prompts table
 
 ## Hurdles
 
