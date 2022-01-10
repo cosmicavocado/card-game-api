@@ -244,13 +244,10 @@ public class GameService {
                     drawUpToTen(player.getId());
                 }
             }
-
             // judge chooses the best response for the round
             winner = getWinner(responses);
-
             // score tracking is updated
             topScore = checkScores(winner, topScore);
-
             // check for game over condition
             checkGameOver();
         }
@@ -281,7 +278,7 @@ public class GameService {
             StringBuilder playersToRespond = new StringBuilder();
             for (Player player : currentPlayers) {
                 if (player != judge) {
-                    playersToRespond.append(player.getName()).append(" id ").append(player.getId()).append(", ");
+                    playersToRespond.append(player.getName()).append(" id ").append(player.getId()).append("; ");
                 }
             }
             return "Current judge: " + judge.getName() +
