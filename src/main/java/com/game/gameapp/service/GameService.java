@@ -206,9 +206,9 @@ public class GameService {
         LOGGER.info("Current players size is " + currentPlayers.size());
         judge = firstJudge();
         // while topScore != 10, play game
-//        while (topScore != 10) {
+        while (topScore != 10) {
             playRound();
-//        }
+        }
     }
 
     public void playRound() {
