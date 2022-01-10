@@ -15,6 +15,10 @@ public class Player {
     @Column
     private String name;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id",referencedColumnName = "id")
+    private PlayerProfile playerProfile;
+
     @Transient
     public ArrayList<Card> hand;
 

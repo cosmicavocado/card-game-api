@@ -230,18 +230,18 @@ public class GameService {
             // reset responses to empty linked hash map
             responses = new LinkedHashMap<>();
 
-//            responsesReceived = false;
+            responsesReceived = false;
 
             // wait for responses
             // https://www.baeldung.com/java-wait-notify
-//            while (!responsesReceived) {
-//                try {
-//                    wait();
-//                } catch (InterruptedException e) {
-//                    Thread.currentThread().interrupt();
-//                    LOGGER.info("Error" + e + ": thread interrupted");
-//                }
-//            }
+            while (!responsesReceived) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    LOGGER.info("Error" + e + ": thread interrupted");
+                }
+            }
 
             // throwaway code for testing
             // simulate player responses
@@ -280,6 +280,34 @@ public class GameService {
         gameLoop();
     }
 
+    public void playRound() {
+        LOGGER.info("Calling playRound from game service.");
+        LOGGER.info("Begin round " + round + ".");
+        // draw prompt
+        Prompt prompt = drawPrompt();
+        LOGGER.info("Judge " + judge.getName() +" with id " + judge.getId() + " drew prompt "+ prompt.getText());
+
+        // reset responses to empty linked hash map
+        responses = new LinkedHashMap<>();
+
+        // throwaway code for testing
+        // simulate player responses
+        for(Player player : currentPlayers) {
+            if(player != judge) {
+                responses.put(player.hand.get(0), player);
+                player.hand.remove(0);
+                drawUpToTen(player.getId());
+            }
+        }
+
+        // judge chooses the best response for the round
+        winner = getWinner(responses);
+        // score tracking is updated
+        topScore = checkScores(winner, topScore);
+        // check for game over condition
+        checkGameOver();
+    }
+
     public String gameStatus() {
         LOGGER.info("Calling gameStatus from game service.");
         if (!gameActive) {
@@ -296,12 +324,14 @@ public class GameService {
         }
     }
 
-    public String viewHand(Long playerId) {
+    public synchronized String viewHand(Long playerId) {
         LOGGER.info("Calling viewHand from game service.");
         Player player = playerRepository.getById(playerId);
-        if (player.getHand().isEmpty()) {
-            throw new InformationNotFoundException("Player hand is currently empty!");
+        if (player.getHand() == null) {
+            throw new InformationNotFoundException("Player " + player.getName()+ " hand is currently empty!");
         }
+        responsesReceived = true;
+        notify();
         return player.getHand().toString();
     }
 }
