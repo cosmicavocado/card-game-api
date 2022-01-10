@@ -220,20 +220,4 @@ public class GameService {
         // check for game over condition
         checkGameOver();
     }
-
-    public String gameStatus() {
-        LOGGER.info("Calling gameStatus from game service.");
-        if (!gameActive) {
-            return "Game inactive. Please start a game before checking the status.";
-        } else {
-            StringBuilder playersToRespond = new StringBuilder();
-            for (Player player : currentPlayers) {
-                if (player != judge) {
-                    playersToRespond.append(player.getName()).append(" id ").append(player.getId()).append("; ");
-                }
-            }
-            return "Current judge: " + judge.getName() + " id " + judge.getId() +
-                    "\nPlayers: " + playersToRespond;
-        }
-    }
 }

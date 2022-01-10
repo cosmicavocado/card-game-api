@@ -25,10 +25,4 @@ public class GameController {
         LOGGER.info("Calling startGame from game controller.");
         gameService.startGame(players);
     }
-
-    @GetMapping(path = "/status")
-    public String gameStatus() {
-        LOGGER.info("Calling gameStatus from game controller.");
-        return gameService.gameStatus();
-    }
 }
