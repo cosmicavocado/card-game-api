@@ -123,22 +123,6 @@ public class GameService {
         return prompt;
     }
 
-    public Card playCard(Long playerId, int cardIndex) {
-        LOGGER.info("Calling playCard method from game service.");
-        // get player using id
-        Player player = playerRepository.getById(playerId);
-        // get player response from hand and remove it
-        Card response = player.getHand().get(cardIndex);
-        player.setResponse(response);
-        player.hand.remove(response);
-        // draw back up to 10
-        drawUpToTen(playerId);
-        // update responses linked hash
-        responses.put(response,player);
-        // return response card at given index from hand
-        return response;
-    }
-
     public void getResponses(PlayerResponses playerResponsesObject) {
         LOGGER.info("Calling getResponses method from game service.");
         // separate playerIds and responses

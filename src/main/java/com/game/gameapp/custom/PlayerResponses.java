@@ -1,8 +1,5 @@
 package com.game.gameapp.custom;
 
-import com.game.gameapp.model.Card;
-import com.game.gameapp.model.Player;
-
 public class PlayerResponses {
     private Long[] playerIds;
     private Integer[] cardIndex;

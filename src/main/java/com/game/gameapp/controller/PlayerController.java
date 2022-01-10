@@ -69,10 +69,4 @@ public class PlayerController {
         playerService.startGame(players);
     }
 
-    // http://localhost:9092/api/player/{playerId}/hand/{cardId}
-    @GetMapping(path="/player/{playerId}/hand/{cardId}")
-    public Card playCard(@PathVariable Long playerId, @PathVariable int cardId) {
-        LOGGER.info("Calling playCard method from player controller.");
-        return playerService.playCard(playerId, cardId);
-    }
 }
