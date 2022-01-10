@@ -63,6 +63,6 @@ public class Game {
     }
 
     public void setPromptList(ArrayList<Prompt> promptList) {
-        this.promptList = promptList;
+        Game.promptList = promptList;
     }
 }
