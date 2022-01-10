@@ -60,7 +60,7 @@ This is a Cards Against Humanity inspired game API.
 
 ## ERD
 
-![img.png](img.png)<img width="473" alt="image" src="https://user-images.githubusercontent.com/80715577/148117268-300ffb48-3477-4a32-ae56-462945687523.png">
+![img.png](img.png)
 
 ## Endpoints
 
