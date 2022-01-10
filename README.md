@@ -115,7 +115,7 @@ We used a kanban board to break our project up into smaller deliverables and mov
 
 ## What We Would Do Next
 
-- Showing the game results to the end user.
+- Show the game results to the end user.
 - Ability for players to add custom cards.
 - Save/Resume game.
 
