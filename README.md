@@ -58,10 +58,12 @@ This is a Cards Against Humanity inspired game API.
 | DELETE       | /api/player/{playerId}                | None         | Delete player                          |
 | GET          | /api/player/{playerId}/draw           | None         | Randomly draw up to 10 cards from list |
 | GET          | /api/player/{playerId}/cards          | None         | Get all cards                          |
-| GET          | /api/player/{playerId}/cards/{cardId} | None         | Get single customCard                        |
-| POST         | /api/customCard                             | Card text    | Add custom customCard to customCard list           |
-| PUT          | /api/customCard/{cardId}                    | Card text    | Update custom customCard in customCard list        |
-| DELETE       | /api/customCard/{cardId}                    | None         | Delete custom customCard from customCard list      |
+| GET          | /api/player/{playerId}/cards/{cardId} | None         | Get single customCard                  |
 | GET          | /api/prompt                           | None         | Get single prompt                      |
 | GET          | /api/prompt/{promptId}                | None         | Get all prompts                        |
 | GET          | /api/play                             | None         | Start the game                         |
+
+## Dependencies
+
+- Database "mygameapp"
+- pgAdmin or similar software for managing CSVs
