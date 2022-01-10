@@ -56,7 +56,7 @@ public class GameService {
             // Check that player exists
             if (player.isPresent()) {
                 currentPlayers.add(player.get());
-                LOGGER.info("Player " + player.get().getName() + " w/ id " + player.get().getId()
+                LOGGER.info("Player " + player.get().getName() + " with id " + player.get().getId()
                         + " added to the game.");
                 // set hand to empty
                 player.get().setHand(new ArrayList<>());
@@ -107,7 +107,7 @@ public class GameService {
     public Player firstJudge() {
         int index = RNG.nextInt(currentPlayers.size());
         judge = currentPlayers.get(index);
-        LOGGER.info("The first judge is " + judge.getName() + ".");
+        LOGGER.info("The first judge is " + judge.getName() + ".\n");
         return judge;
     }
 
@@ -142,6 +142,7 @@ public class GameService {
         List<Card> respKeyList = new ArrayList<>(responses.keySet());
         // Get winning card using index n
         Card bestResponse = respKeyList.get(n);
+        // get the player from the hashmap using their response
         winner = responses.get(bestResponse);
         return winner;
     }
@@ -171,15 +172,15 @@ public class GameService {
     public void checkGameOver() {
         // If game is not over
         if (topScore != 10) {
-            LOGGER.info(winner.getName()+" wins round " + round + "! Their new score is " + winner.getScore() + ".");
+            LOGGER.info(winner.getName()+ " wins round " + round + "! Their new score is " + winner.getScore() + ".");
             // rotate next judge
             judge = nextJudge(judge, currentPlayers);
             LOGGER.info("The next judge is "+ judge.getName() + ".");
         } else {
-            LOGGER.info("Game Over! "+ winner.getName() + " wins!!");
+            LOGGER.info("Game Over! " + winner.getName() + " wins!!");
             gameActive = false;
         }
-        LOGGER.info("End of round "+ round + ".\n");
+        LOGGER.info("End of round " + round + ".\n");
         // increment round tracker
         round++;
     }
