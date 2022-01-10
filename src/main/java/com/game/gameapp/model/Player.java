@@ -20,9 +20,6 @@ public class Player {
     @Transient
     private int score;
 
-    @Transient
-    private Card response;
-
     public Player() {
     }
 

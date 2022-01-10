@@ -251,15 +251,4 @@ public class GameService {
                     "\nPlayers: " + playersToRespond;
         }
     }
-
-
-//    public String viewHand(Long playerId) {
-//        LOGGER.info("Calling viewHand from game service.");
-//        Player player = playerRepository.getById(playerId);
-//        if (player.getHand() == null) {
-//            throw new InformationNotFoundException("Player " + player.getName()+ " hand is currently empty!");
-//        } else {
-//            return player.getHand().toString();
-//        }
-//    }
 }
