@@ -23,13 +23,13 @@ public class GameController {
         this.gameService = gameService;
     }
 
-    @PostMapping(path="/start")
+    @PostMapping(path="/game/start")
     public void startGame(LinkedHashMap<String, ArrayList<Long>> players) {
         LOGGER.info("Calling startGame from game controller.");
         gameService.startGame(players);
     }
 
-    @PostMapping(path = "/responses")
+    @PostMapping(path = "/game/responses")
     public void getResponses(@RequestBody PlayerResponses playerResponsesObject) {
         LOGGER.info("Calling getResponses from game controller.");
         gameService.getResponses(playerResponsesObject);

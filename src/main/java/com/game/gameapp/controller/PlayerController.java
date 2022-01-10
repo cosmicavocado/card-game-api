@@ -62,11 +62,10 @@ public class PlayerController {
         playerService.drawUpToTen(playerId);
     }
 
-    // http://localhost:9092/api/player/{playerIds}/play
-    @PostMapping(path="/player/play")
-    public void playGame(@RequestBody LinkedHashMap<String, ArrayList<Long>> players) {
+    // http://localhost:9092/api/player/start
+    @PostMapping(path="/player/start")
+    public void startGame(@RequestBody LinkedHashMap<String, ArrayList<Long>> players) {
         LOGGER.info("Calling playGame method from player controller.");
         playerService.startGame(players);
     }
-
 }

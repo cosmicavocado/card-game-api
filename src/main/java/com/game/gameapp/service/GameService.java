@@ -20,11 +20,17 @@ import java.util.logging.Logger;
 public class GameService {
     private static final Logger LOGGER = Logger.getLogger(GameService.class.getName());
     private static final Random RNG = new Random();
+    // Static Game Variables
     private static ArrayList<Card> deck;
     private static ArrayList<Prompt> prompts;
     private static ArrayList<Player> currentPlayers;
     private static Player judge;
+    private static Player winner;
+    private static int topScore;
+    private static int round;
+    private static boolean responsesReceived;
     private static LinkedHashMap<Card, Player> responses;
+    // Repositories
     private PlayerRepository playerRepository;
     private PromptRepository promptRepository;
     private CardRepository cardRepository;
@@ -123,7 +129,7 @@ public class GameService {
         return prompt;
     }
 
-    public void getResponses(PlayerResponses playerResponsesObject) {
+    public synchronized void getResponses(PlayerResponses playerResponsesObject) {
         LOGGER.info("Calling getResponses method from game service.");
         // separate playerIds and responses
         Long[] playerIds = playerResponsesObject.getPlayerIds();
@@ -140,6 +146,8 @@ public class GameService {
             player.hand.remove(response);
             // player draws back up to 10
             drawUpToTen(playerIds[i]);
+            responsesReceived = true;
+            notifyAll();
         }
     }
 
@@ -181,40 +189,54 @@ public class GameService {
         return currentPlayers.get(nextJudge);
     }
 
-    public void playGame() {
+    public void checkGameOver() {
+        // If game is not over
+        if (topScore != 10) {
+            LOGGER.info(winner.getName()+" wins round " + round + "! Their new score is " + winner.getScore());
+            // rotate next judge
+            judge = nextJudge(judge, currentPlayers);
+            LOGGER.info("Next judge is "+ judge.getName());
+        } else {
+            LOGGER.info("Game Over! "+ winner.getName() + " wins!!");
+        }
+        LOGGER.info("End of round "+ round + ".\n");
+        // increment round tracker
+        round++;
+    }
+
+    public synchronized void playGame() {
         // initialize tracking variables
-        int topScore = 0;
-        int round = 1;
+        topScore = 0;
+        round = 1;
 
         while(topScore != 10) {
             // draw prompt
             Prompt prompt = drawPrompt();
             LOGGER.info("Judge " + judge.getName() +" drew prompt "+ prompt.getText());
+            responsesReceived = false;
 
-            // initialize/redefine responses to be an empty linked hashmap
-            responses = new LinkedHashMap<>();
+            // wait for responses
+            // https://www.baeldung.com/java-wait-notify
+            while (!responsesReceived) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    LOGGER.info("Error" + e + ": thread interrupted");
+                }
+            }
 
             // judge chooses the best response for the round
-            Player winner = getWinner(responses);
+            winner = getWinner(responses);
 
-            // reset responses
+            // reset responses to empty
             responses = new LinkedHashMap<>();
 
             // score tracking is updated
             topScore = checkScores(winner, topScore);
 
-            // If game is not over
-            if (topScore != 10) {
-                LOGGER.info(winner.getName()+" wins round " + round + "! Their new score is " + winner.getScore());
-                // rotate next judge
-                judge = nextJudge(judge, currentPlayers);
-                LOGGER.info("Next judge is "+ judge.getName());
-            } else {
-                LOGGER.info("Game Over! "+ winner.getName() + " wins!!");
-            }
-            LOGGER.info("End of round "+ round + ".\n");
-            // increment round tracker
-            round++;
+            // check for game over condition
+            checkGameOver();
         }
     }
 
