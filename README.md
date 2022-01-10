@@ -76,13 +76,18 @@ This is a Cards Against Humanity inspired game API.
 
 ## Dependencies
 
-- Database "mygameapp".
-- pgAdmin or similar database management software for importing the CSVs for Card and Prompt.
+- Install [pgAdmin](https://www.pgadmin.org/download/)
+- Install [postgreSQL](https://www.postgresql.org/download/)
+- Create database named "mygameapp"
+- Run card-game-api to generate tables
+- [Import](https://www.pgadmin.org/docs/pgadmin4/development/import_export_data.html) CSVs into pgAdmin
+  - cards.csv > card table
+  - prompts.csv > prompts table
 
 ## Hurdles
 
-- Since this is a unique use-case we didn't need to persist the data in our database
-  - Every iteration the data will be loaded randomly
+- Since this is a unique use-case we didn't need to persist the data in our database.
+  - Every iteration the card/prompt data will be loaded into an ArrayList which can be randomly drawn from.
 - We learned a lot during implementation so that we eliminated extra fields in our models.
   - Used [@Transient annotation](https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/annotation/Transient.html) to track data not persisted in our database
 - Got a runtime exception [UnsupportedOperationException](https://docs.oracle.com/javase/7/docs/api/java/lang/UnsupportedOperationException.html) while adding data to the list because it is an immutable data structure.
@@ -98,10 +103,8 @@ This is a Cards Against Humanity inspired game API.
 ## What We Would Do Differently
 
 - ERD design.
-  - Upon starting the work, we realized our original ERD didn't make sense for our use-case.
-- We would have used time-blocking in addition to our kanban to avoid overspending time
-
-
+  - Upon starting the work, we realized that our original ERD didn't make sense for our use-case.
+- We would have used time-blocking in addition to our kanban to avoid over-allocating time.
 
 ## What We Would Do Next
 
@@ -115,3 +118,9 @@ This is a Cards Against Humanity inspired game API.
 - Better understanding of model and service layers.
 - Better understanding of ERDs.
 - Git pull/branching.
+
+## Acknowledgements
+
+- Thanks to everyone on our Instructional team for pushing us to grow as developers.
+  - Special thanks to Suresh Sigera for being an inspiring and insightful team-lead.
+- Thanks to Interapt for providing us with the opportunity to develop and hone our talents.
