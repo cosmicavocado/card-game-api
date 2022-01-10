@@ -17,4 +17,27 @@ public class PlayerProfile {
 
     @Column
     private int wins;
+
+    public PlayerProfile() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public int getWins() {
+        return wins;
+    }
+
+    public void setWins(int wins) {
+        this.wins = wins;
+    }
 }
