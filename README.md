@@ -37,6 +37,9 @@ This is a Cards Against Humanity inspired game API.
 - Adjust design and plan
 - Repeat develop and adjust
 
+## Planning
+
+![img_1.png](img_1.png)
 
 ## User Stories
 
@@ -78,8 +81,11 @@ This is a Cards Against Humanity inspired game API.
 
 ## Hurdles
 
-- Design was tough because it was so different from what we did in class.
-- We learned a lot during implementation that would have affected our design and approach had we known prior.
+- Since this is a unique use-case we didn't need to persist the data in our database
+  - Every iteration the data will be loaded randomly
+- We learned a lot during implementation so that we eliminated extra fields in our models.
+  - Used [@Transient annotation](https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/annotation/Transient.html) to track data not persisted in our database
+- Got a runtime exception [UnsupportedOperationException](https://docs.oracle.com/javase/7/docs/api/java/lang/UnsupportedOperationException.html) while adding data to the list because it is an immutable data structure.
 
 ## Wins
 
@@ -93,17 +99,18 @@ This is a Cards Against Humanity inspired game API.
 
 - ERD design.
   - Upon starting the work, we realized our original ERD didn't make sense for our use-case.
+- We would have used time-blocking in addition to our kanban to avoid overspending time
+
+
 
 ## What We Would Do Next
 
-- Ability for players to add custom cards
-- Save/Resume game
+- Showing the game results to the end user.
+- Ability for players to add custom cards.
+- Save/Resume game.
 
 ## What We Learned
 
-- List data structure is immutable - had to use ArrayLists for deck.
-- @Transient annotation.
-    - We can track fields that are not persisted in the database using this annotations.
 - Our understanding of endpoints has dramatically improved.
 - Better understanding of model and service layers.
 - Better understanding of ERDs.
