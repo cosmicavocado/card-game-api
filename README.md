@@ -66,15 +66,15 @@ We used a kanban board to break our project up into smaller deliverables and mov
 
 ## Endpoints
 
-| Request Type | URL                         | Request Body | Functionality                          |
-|--------------|-----------------------------|--------------|----------------------------------------|
-| GET          | /api/player                 | None         | Get all players                        |
-| GET          | /api/player/{playerId}      | None         | Get single player                      |
-| POST         | /api/player                 | Player name  | Create new player                      |
-| PUT          | /api/player/{playerId}      | Player name  | Update player                          |
-| DELETE       | /api/player/{playerId}      | None         | Delete player                          |
-| GET          | /api/player/{playerId}/draw | None         | Randomly draw up to 10 cards from list |
-| POST         | /api/player/start           | None         | Start the game                         |
+| Request Type | URL                         | Request Body        | Functionality                          |
+|--------------|-----------------------------|---------------------|----------------------------------------|
+| GET          | /api/player                 | None                | Get all players                        |
+| GET          | /api/player/{playerId}      | None                | Get single player                      |
+| POST         | /api/player                 | Player name         | Create new player                      |
+| PUT          | /api/player/{playerId}      | Player name         | Update player                          |
+| DELETE       | /api/player/{playerId}      | None                | Delete player                          |
+| GET          | /api/player/{playerId}/draw | None                | Randomly draw up to 10 cards from list |
+| POST         | /api/player/start           | ArrayList playerIds | Start the game                         |
 
 ## Dependencies
 
