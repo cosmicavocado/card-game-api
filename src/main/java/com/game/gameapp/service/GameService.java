@@ -201,6 +201,7 @@ public class GameService {
             LOGGER.info("Next judge is "+ judge.getName());
         } else {
             LOGGER.info("Game Over! "+ winner.getName() + " wins!!");
+            gameActive = false;
         }
         LOGGER.info("End of round "+ round + ".\n");
         // increment round tracker
