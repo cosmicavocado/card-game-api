@@ -26,7 +26,6 @@ public class GameService {
     private static Player winner;
     private static int topScore;
     private static int round;
-    private static boolean responsesReceived;
     private static LinkedHashMap<Card, Player> responses;
     private static boolean gameActive = false;
     // Repositories
@@ -91,13 +90,9 @@ public class GameService {
     public ArrayList<Card> createDeck() {
         LOGGER.info("Calling createDeck from game service.");
         ArrayList<Card> cards = (ArrayList<Card>) cardRepository.findAll();
-//        List<CustomCard> customCards = customCardRepository.findAll();
         if (cards.isEmpty()) {
             throw new InformationNotFoundException("Please ensure the cards are loaded into the card table.");
         } else {
-//            List<Object> newList = new ArrayList<>();
-//            newList.add(cards);
-//            newList.add(customCards);
             return cards;
         }
     }
@@ -128,35 +123,6 @@ public class GameService {
         prompts.remove(n);
         return prompt;
     }
-
-//    public String pickResponse(int responseId){
-//        responses.
-//        return "";
-//    }
-
-//    public synchronized void getResponses(PlayerResponses playerResponsesObject) {
-//        LOGGER.info("Calling getResponses method from game service.");
-//        // separate playerIds and responses
-//        String [] playerNames = playerResponsesObject.getPlayerNames();
-//        Integer[] cardIndexes = playerResponsesObject.getCardIndex();
-//        // iterate through each array and update the responses linked hash
-//        for (int i=0; i<playerNames.length; i++) {
-//            // get player
-//            Player player = playerRepository.getByName(playerNames[i]);
-//            LOGGER.info("Player name "+ player.getName());
-//            // get card
-//            Card response = player.getHand().get(cardIndexes[i]);
-//            // add to responses linked hash
-//            LOGGER.info("Player "+player.getName()+" played card "+response.getText()+" from hand.");
-//            responses.put(response,player);
-//            // remove from player hand
-//            player.hand.remove(response);
-//            // player draws back up to 10
-//            drawUpToTen(player.getId());
-//            responsesReceived = true;
-//            notifyAll();
-//        }
-//    }
 
     public Player getWinner(LinkedHashMap<Card,Player> responses) {
         // judge picks winning response (will be endpoint)
@@ -208,56 +174,13 @@ public class GameService {
         round++;
     }
 
-    public synchronized void gameLoop() {
-        LOGGER.info("Calling gameLoop method from game service.");
-        // initialize tracking variables
-        topScore = 0;
-        round = 1;
-        // while game != over
-        while(topScore != 10) {
-            // draw prompt
-            Prompt prompt = drawPrompt();
-            LOGGER.info("Judge " + judge.getName() +" with id " + judge.getId() + " drew prompt "+ prompt.getText());
-
-            // reset responses to empty linked hash map
-            responses = new LinkedHashMap<>();
-
-            responsesReceived = false;
-
-            // wait for responses
-            // https://www.baeldung.com/java-wait-notify
-            while (!responsesReceived) {
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    LOGGER.info("Error" + e + ": thread interrupted");
-                }
-            }
-
-            // throwaway code for testing
-            // simulate player responses
-            for(Player player : currentPlayers) {
-                if(player != judge) {
-                    responses.put(player.hand.get(0), player);
-                    player.hand.remove(0);
-                    drawUpToTen(player.getId());
-                }
-            }
-
-            // judge chooses the best response for the round
-            winner = getWinner(responses);
-            // score tracking is updated
-            topScore = checkScores(winner, topScore);
-            // check for game over condition
-            checkGameOver();
-        }
-    }
-
     public void startGame(LinkedHashMap<String, ArrayList<Long>> players) {
         LOGGER.info("Calling startGame method from game service.");
         // set game status to active
         gameActive = true;
+        // initialize tracking variables
+        topScore = 0;
+        round = 1;
         // create deck & prompts
         deck = createDeck();
         prompts = createPrompts();
@@ -269,7 +192,9 @@ public class GameService {
         LOGGER.info("Current players size is " + currentPlayers.size());
         judge = firstJudge();
         // while topScore != 10, play game
-        gameLoop();
+        while (topScore != 10) {
+            playRound();
+        }
     }
 
     public void playRound() {
@@ -278,11 +203,8 @@ public class GameService {
         // draw prompt
         Prompt prompt = drawPrompt();
         LOGGER.info("Judge " + judge.getName() +" with id " + judge.getId() + " drew prompt "+ prompt.getText());
-
         // reset responses to empty linked hash map
         responses = new LinkedHashMap<>();
-
-        // throwaway code for testing
         // simulate player responses
         for(Player player : currentPlayers) {
             if(player != judge) {
@@ -291,11 +213,11 @@ public class GameService {
                 drawUpToTen(player.getId());
             }
         }
-
         // judge chooses the best response for the round
         winner = getWinner(responses);
         // score tracking is updated
         topScore = checkScores(winner, topScore);
+        LOGGER.info("End round " + round + ".");
         // check for game over condition
         checkGameOver();
     }
@@ -316,14 +238,12 @@ public class GameService {
         }
     }
 
-    public synchronized String viewHand(Long playerId) {
-        LOGGER.info("Calling viewHand from game service.");
-        Player player = playerRepository.getById(playerId);
-        if (player.getHand() == null) {
-            throw new InformationNotFoundException("Player " + player.getName()+ " hand is currently empty!");
-        }
-        responsesReceived = true;
-        notify();
-        return player.getHand().toString();
-    }
+//    public String viewHand(Long playerId) {
+//        LOGGER.info("Calling viewHand from game service.");
+//        Player player = playerRepository.getById(playerId);
+//        if (player.getHand() == null) {
+//            throw new InformationNotFoundException("Player " + player.getName()+ " hand is currently empty!");
+//        }
+//        return player.getHand().toString();
+//    }
 }

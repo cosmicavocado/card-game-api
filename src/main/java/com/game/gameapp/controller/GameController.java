@@ -1,6 +1,5 @@
 package com.game.gameapp.controller;
 
-import com.game.gameapp.custom.PlayerResponses;
 import com.game.gameapp.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,10 +30,4 @@ public class GameController {
         LOGGER.info("Calling gameStatus from game controller.");
         return gameService.gameStatus();
     }
-
-//    @PostMapping(path = "/game/responses")
-//    public void getResponses(@RequestBody PlayerResponses playerResponsesObject) {
-//        LOGGER.info("Calling getResponses from game controller.");
-//        gameService.getResponses(playerResponsesObject);
-//    }
 }

@@ -76,8 +76,8 @@ public class PlayerController {
 //        return playerService.bestResponse(responseIndex);
 //    }
 
-    @GetMapping(path="/player/{playerId}/hand")
-    public String viewHand(@PathVariable Long playerId) {
-        return playerService.viewHand(playerId);
-    }
+//    @GetMapping(path="/player/{playerId}/hand")
+//    public String viewHand(@PathVariable Long playerId) {
+//        return playerService.viewHand(playerId);
+//    }
 }
