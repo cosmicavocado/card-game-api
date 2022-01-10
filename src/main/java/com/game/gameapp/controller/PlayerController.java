@@ -66,7 +66,7 @@ public class PlayerController {
     @PostMapping(path="/player/play")
     public void playGame(@RequestBody LinkedHashMap<String, ArrayList<Long>> players) {
         LOGGER.info("Calling playGame method from player controller.");
-        playerService.playGame(players);
+        playerService.startGame(players);
     }
 
     // http://localhost:9092/api/player/{playerId}/hand/{cardId}

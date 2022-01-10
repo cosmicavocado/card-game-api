@@ -86,8 +86,8 @@ public class PlayerService {
         gameService.drawUpToTen(playerId);
     }
 
-    public void playGame(LinkedHashMap<String, ArrayList<Long>> players) {
-        gameService.playGame(players);
+    public void startGame(LinkedHashMap<String, ArrayList<Long>> players) {
+        gameService.startGame(players);
     }
 
     public Card playCard(Long playerId, int cardIndex) {

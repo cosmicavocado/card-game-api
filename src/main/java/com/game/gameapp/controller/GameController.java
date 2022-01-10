@@ -1,8 +1,10 @@
 package com.game.gameapp.controller;
 
+import com.game.gameapp.custom.PlayerResponses;
 import com.game.gameapp.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,9 +23,15 @@ public class GameController {
         this.gameService = gameService;
     }
 
-    @PostMapping(path="/play")
-    public void playGame(LinkedHashMap<String, ArrayList<Long>> players) {
-        LOGGER.info("Calling playGame from game controller.");
-        gameService.playGame(players);
+    @PostMapping(path="/start")
+    public void startGame(LinkedHashMap<String, ArrayList<Long>> players) {
+        LOGGER.info("Calling startGame from game controller.");
+        gameService.startGame(players);
+    }
+
+    @PostMapping(path = "/responses")
+    public void getResponses(@RequestBody PlayerResponses playerResponsesObject) {
+        LOGGER.info("Calling getResponses from game controller.");
+        gameService.getResponses(playerResponsesObject);
     }
 }

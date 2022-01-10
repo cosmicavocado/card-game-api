@@ -1,8 +1,8 @@
 package com.game.gameapp.service;
 
+import com.game.gameapp.custom.PlayerResponses;
 import com.game.gameapp.exception.InformationNotFoundException;
 import com.game.gameapp.model.Card;
-import com.game.gameapp.model.CustomCard;
 import com.game.gameapp.model.Player;
 import com.game.gameapp.model.Prompt;
 import com.game.gameapp.repository.CardRepository;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 
 @Service
@@ -24,6 +23,7 @@ public class GameService {
     private static ArrayList<Card> deck;
     private static ArrayList<Prompt> prompts;
     private static ArrayList<Player> currentPlayers;
+    private static Player judge;
     private static LinkedHashMap<Card, Player> responses;
     private PlayerRepository playerRepository;
     private PromptRepository promptRepository;
@@ -139,19 +139,25 @@ public class GameService {
         return response;
     }
 
-//    public LinkedHashMap<Card,Player> getResponses(List<Player> currentPlayers, Player judge) {
-//        // loop all players for this round
-//        for(Player player : currentPlayers) {
-//            drawUpToTen(player.getId()); // keeps all players at max hand size
-//            // if player is not the judge this round
-//            if(!player.equals(judge)) {
-//                Card card = playCard(player.getId(),);
-//                responses.put(card, player);
-//                LOGGER.info(player.getName() + " played " + card.getText());
-//            }
-//        }
-//        return responses;
-//    }
+    public void getResponses(PlayerResponses playerResponsesObject) {
+        LOGGER.info("Calling getResponses method from game service.");
+        // separate playerIds and responses
+        Long[] playerIds = playerResponsesObject.getPlayerIds();
+        Integer[] cardIndexes = playerResponsesObject.getCardIndex();
+        // iterate through each array and update the responses linked hash
+        for (int i=0; i<playerIds.length; i++) {
+            // get player
+            Player player = playerRepository.getById(playerIds[i]);
+            // get card
+            Card response = player.hand.get(cardIndexes[i]);
+            // add to responses linked hash
+            responses.put(response,player);
+            // remove from player hand
+            player.hand.remove(response);
+            // player draws back up to 10
+            drawUpToTen(playerIds[i]);
+        }
+    }
 
     public Player getWinner(LinkedHashMap<Card,Player> responses) {
         if (responses.size() < currentPlayers.size()) {
@@ -191,39 +197,19 @@ public class GameService {
         return currentPlayers.get(nextJudge);
     }
 
-    public void playGame(LinkedHashMap<String, ArrayList<Long>> players) {
-        LOGGER.info("Calling playGame method from game service.");
-        // create deck & prompts
-        deck = createDeck();
-        prompts = createPrompts();
-
-        // Saves playerIds from HashMap to ArrayList
-        ArrayList<Long> playerIds = players.get("players");
-
-        // Sets up new game & checks for valid players
-        currentPlayers = newGame(playerIds);
-
-        // use RNG to pick random first judge
-        Player judge = firstJudge(currentPlayers);
-
+    public void playGame() {
         // initialize tracking variables
         int topScore = 0;
         int round = 1;
 
-        // while topScore != 10, play game
         while(topScore != 10) {
             // draw prompt
             Prompt prompt = drawPrompt();
             LOGGER.info("Judge " + judge.getName() +" drew prompt "+ prompt.getText());
-            // initialize responses to empty hashmap
+
+            // initialize/redefine responses to be an empty linked hashmap
             responses = new LinkedHashMap<>();
-            // players play response and draw up to 10
-//            LinkedHashMap<Card,Player> responses = getResponses(currentPlayers, judge);
 
-            // WAIT FOR ALL PLAYERS TO RESPOND
-            if (responses.size()< currentPlayers.size()) {
-
-            }
             // judge chooses the best response for the round
             Player winner = getWinner(responses);
 
@@ -246,5 +232,24 @@ public class GameService {
             // increment round tracker
             round++;
         }
+    }
+
+    public void startGame(LinkedHashMap<String, ArrayList<Long>> players) {
+        LOGGER.info("Calling startGame method from game service.");
+        // create deck & prompts
+        deck = createDeck();
+        prompts = createPrompts();
+
+        // Saves playerIds from HashMap to ArrayList
+        ArrayList<Long> playerIds = players.get("players");
+
+        // Sets up new game & checks for valid players
+        currentPlayers = newGame(playerIds);
+
+        // use RNG to pick random first judge
+        judge = firstJudge(currentPlayers);
+
+        // while topScore != 10, play game
+        playGame();
     }
 }
