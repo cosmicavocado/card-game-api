@@ -101,10 +101,10 @@ This is a Cards Against Humanity inspired game API.
 
 ## What We Learned
 
-- List data structure is immutable - had to use ArrayLists for deck
-- @Transient annotation
-    - We can track fields that are not persisted in the database using this annotations
-- Our understanding of endpoints has dramatically improved
-- Better understanding of model and service layers
-- Better understanding of ERDs
-- Git pull/branching
+- List data structure is immutable - had to use ArrayLists for deck.
+- @Transient annotation.
+    - We can track fields that are not persisted in the database using this annotations.
+- Our understanding of endpoints has dramatically improved.
+- Better understanding of model and service layers.
+- Better understanding of ERDs.
+- Git pull/branching.
