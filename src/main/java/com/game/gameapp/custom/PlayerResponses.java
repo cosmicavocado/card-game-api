@@ -1,18 +1,18 @@
 package com.game.gameapp.custom;
 
 public class PlayerResponses {
-    private Long[] playerIds;
+    private String[] playerNames;
     private Integer[] cardIndex;
 
     public PlayerResponses() {
     }
 
-    public Long[] getPlayerIds() {
-        return playerIds;
+    public String[] getPlayerNames() {
+        return playerNames;
     }
 
-    public void setPlayerIds(Long[] playerIds) {
-        this.playerIds = playerIds;
+    public void setPlayerName(String[] playerName) {
+        this.playerNames = playerName;
     }
 
     public Integer[] getCardIndex() {

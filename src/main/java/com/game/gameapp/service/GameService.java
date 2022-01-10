@@ -1,5 +1,6 @@
 package com.game.gameapp.service;
 
+import com.game.gameapp.custom.PlayerResponses;
 import com.game.gameapp.exception.InformationNotFoundException;
 import com.game.gameapp.model.Card;
 import com.game.gameapp.model.Player;
@@ -136,23 +137,30 @@ public class GameService {
         return prompt;
     }
 
+//    public String pickResponse(int responseId){
+//        responses.
+//        return "";
+//    }
+
 //    public synchronized void getResponses(PlayerResponses playerResponsesObject) {
 //        LOGGER.info("Calling getResponses method from game service.");
 //        // separate playerIds and responses
-//        Long[] playerIds = playerResponsesObject.getPlayerIds();
+//        String [] playerNames = playerResponsesObject.getPlayerNames();
 //        Integer[] cardIndexes = playerResponsesObject.getCardIndex();
 //        // iterate through each array and update the responses linked hash
-//        for (int i=0; i<playerIds.length; i++) {
+//        for (int i=0; i<playerNames.length; i++) {
 //            // get player
-//            Player player = playerRepository.getById(playerIds[i]);
+//            Player player = playerRepository.getByName(playerNames[i]);
+//            LOGGER.info("Player name "+ player.getName());
 //            // get card
-//            Card response = player.hand.get(cardIndexes[i]);
+//            Card response = player.getHand().get(cardIndexes[i]);
 //            // add to responses linked hash
+//            LOGGER.info("Player "+player.getName()+" played card "+response.getText()+" from hand.");
 //            responses.put(response,player);
 //            // remove from player hand
 //            player.hand.remove(response);
 //            // player draws back up to 10
-//            drawUpToTen(playerIds[i]);
+//            drawUpToTen(player.getId());
 //            responsesReceived = true;
 //            notifyAll();
 //        }
@@ -208,7 +216,7 @@ public class GameService {
         round++;
     }
 
-    public void gameLoop() {
+    public synchronized void gameLoop() {
         LOGGER.info("Calling gameLoop method from game service.");
         // initialize tracking variables
         topScore = 0;
@@ -219,7 +227,7 @@ public class GameService {
             Prompt prompt = drawPrompt();
             LOGGER.info("Judge " + judge.getName() +" with id " + judge.getId() + " drew prompt "+ prompt.getText());
 
-            // reset responses to empty
+            // reset responses to empty linked hash map
             responses = new LinkedHashMap<>();
 
 //            responsesReceived = false;
@@ -244,6 +252,7 @@ public class GameService {
                     drawUpToTen(player.getId());
                 }
             }
+
             // judge chooses the best response for the round
             winner = getWinner(responses);
             // score tracking is updated
@@ -272,6 +281,7 @@ public class GameService {
     }
 
     public String gameStatus() {
+        LOGGER.info("Calling gameStatus from game service.");
         if (!gameActive) {
             return "Game inactive. Please start a game before checking the status.";
         } else {
@@ -284,5 +294,14 @@ public class GameService {
             return "Current judge: " + judge.getName() + " id " + judge.getId() +
                     "\nPlayers: " + playersToRespond;
         }
+    }
+
+    public String viewHand(Long playerId) {
+        LOGGER.info("Calling viewHand from game service.");
+        Player player = playerRepository.getById(playerId);
+        if (player.getHand().isEmpty()) {
+            throw new InformationNotFoundException("Player hand is currently empty!");
+        }
+        return player.getHand().toString();
     }
 }

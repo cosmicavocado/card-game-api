@@ -68,4 +68,16 @@ public class PlayerController {
         LOGGER.info("Calling startGame method from player controller.");
         playerService.startGame(players);
     }
+
+    // http://localhost:9092/api/player/{responseId}
+//    @GetMapping(path="/player/{responseIndex}")
+//    public String bestResponse(@PathVariable int responseIndex) {
+//        LOGGER.info("Calling pickResponse from player controller.");
+//        return playerService.bestResponse(responseIndex);
+//    }
+
+    @GetMapping(path="/player/{playerId}/hand")
+    public String viewHand(@PathVariable Long playerId) {
+        return playerService.viewHand(playerId);
+    }
 }
