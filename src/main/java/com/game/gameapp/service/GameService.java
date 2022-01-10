@@ -49,7 +49,6 @@ public class GameService {
     }
 
     public ArrayList<Player> newGame(List<Long> playerIds) {
-        LOGGER.info("Calling newGame method from game service.");
         currentPlayers = new ArrayList<>();
         // loop all players
         for (Long playerId : playerIds) {
@@ -107,16 +106,15 @@ public class GameService {
 
     public Player firstJudge() {
         int index = RNG.nextInt(currentPlayers.size());
-        System.out.println("Index of judge is "+index);
         judge = currentPlayers.get(index);
-        LOGGER.info("The first judge is " + judge.getName());
+        LOGGER.info("The first judge is " + judge.getName() + ".");
         return judge;
     }
 
     public void drawPrompt() {
         int n = RNG.nextInt(prompts.size());
         Prompt prompt = prompts.get(n);
-        LOGGER.info("Judge " + judge.getName() + " drew " + prompt.getText());
+        LOGGER.info("Judge " + judge.getName() + " drew " + prompt.getText() + ".");
         prompts.remove(n);
     }
 
@@ -132,7 +130,7 @@ public class GameService {
                 responses.put(card, player);
                 // keeps players at max hand size
                 drawUpToTen(player.getId());
-                LOGGER.info(player.getName() + " played " + card.getText());
+                LOGGER.info(player.getName() + " played " + card.getText() + ".");
             }
         }
     }
@@ -173,7 +171,7 @@ public class GameService {
     public void checkGameOver() {
         // If game is not over
         if (topScore != 10) {
-            LOGGER.info(winner.getName()+" wins round " + round + "! Their new score is " + winner.getScore());
+            LOGGER.info(winner.getName()+" wins round " + round + "! Their new score is " + winner.getScore() + ".");
             // rotate next judge
             judge = nextJudge(judge, currentPlayers);
             LOGGER.info("The next judge is "+ judge.getName() + ".");
@@ -200,7 +198,7 @@ public class GameService {
         // Sets up new game & checks for valid players
         currentPlayers = newGame(playerIds);
         // use RNG to pick random first judge
-        LOGGER.info("Current players size is " + currentPlayers.size());
+        LOGGER.info("Current players size is " + currentPlayers.size() + ".");
         judge = firstJudge();
         // while topScore != 10, play game
         while (topScore != 10) {
