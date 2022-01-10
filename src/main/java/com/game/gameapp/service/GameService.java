@@ -193,9 +193,9 @@ public class GameService {
         // create deck & prompts
         deck = createDeck();
         prompts = createPrompts();
-        // Saves playerIds from HashMap to ArrayList
+        // stores playerIds from HashMap
         ArrayList<Long> playerIds = players.get("players");
-        // Sets up new game & checks for valid players
+        // resets game & checks that all players are valid
         currentPlayers = newGame(playerIds);
         // use RNG to pick random first judge
         judge = firstJudge();
