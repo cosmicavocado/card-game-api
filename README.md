@@ -90,7 +90,7 @@ We used a kanban board to break our project up into smaller deliverables and mov
 
 - Since this is a unique use-case we didn't need to persist the data in our database.
   - Every iteration
-    - The players can be added via player id using the start game endpoint
+    - The players are added via player id using the start game endpoint
     - The card/prompt data will be loaded into ArrayLists which can be randomly drawn from and updated.
 - We learned a lot during implementation so that we eliminated extra fields in our models.
   - Used [@Transient annotation](https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/annotation/Transient.html) to track data not persisted in our database
