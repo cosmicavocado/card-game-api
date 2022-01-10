@@ -116,12 +116,26 @@ public class GameService {
         return judge;
     }
 
-    public Prompt drawPrompt() {
+    public void drawPrompt() {
         LOGGER.info("Calling drawPrompts from game service.");
         int n = RNG.nextInt(prompts.size());
         Prompt prompt = prompts.get(n);
         prompts.remove(n);
-        return prompt;
+    }
+
+    public Card playCard(Long playerId, int cardIndex) {
+        LOGGER.info("Calling playCard method from game service.");
+        // get player using id
+        Player player = playerRepository.getById(playerId);
+        // get player response from hand and remove it
+        Card response = player.getHand().get(cardIndex);
+        player.hand.remove(response);
+        // draw back up to 10
+        drawUpToTen(playerId);
+        // update responses linked hash
+        responses.put(response,player);
+        // return response card at given index from hand
+        return response;
     }
 
     public Player getWinner(LinkedHashMap<Card,Player> responses) {
@@ -201,8 +215,8 @@ public class GameService {
         LOGGER.info("Calling playRound from game service.");
         LOGGER.info("Begin round " + round + ".");
         // draw prompt
-        Prompt prompt = drawPrompt();
-        LOGGER.info("Judge " + judge.getName() +" with id " + judge.getId() + " drew prompt "+ prompt.getText());
+        drawPrompt();
+
         // reset responses to empty linked hash map
         responses = new LinkedHashMap<>();
         // simulate player responses
@@ -238,12 +252,14 @@ public class GameService {
         }
     }
 
+
 //    public String viewHand(Long playerId) {
 //        LOGGER.info("Calling viewHand from game service.");
 //        Player player = playerRepository.getById(playerId);
 //        if (player.getHand() == null) {
 //            throw new InformationNotFoundException("Player " + player.getName()+ " hand is currently empty!");
+//        } else {
+//            return player.getHand().toString();
 //        }
-//        return player.getHand().toString();
 //    }
 }

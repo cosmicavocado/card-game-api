@@ -1,5 +1,6 @@
 package com.game.gameapp.controller;
 
+import com.game.gameapp.model.Card;
 import com.game.gameapp.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

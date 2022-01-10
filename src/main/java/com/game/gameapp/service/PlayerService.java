@@ -90,12 +90,17 @@ public class PlayerService {
         gameService.startGame(players);
     }
 
+    public Card playCard(Long playerId, int cardIndex) {
+        return gameService.playCard(playerId,cardIndex);
+    }
+
+
 //    public String bestResponse(int responseIndex){
 //        return gameService.pickResponse(responseIndex);
 //    }
 
 //    public String viewHand(Long playerId) {
 //        LOGGER.info("Calling view hand from player service.");
-//        return gameService.viewHand(playerId).toString();
+//        return gameService.viewHand(playerId);
 //    }
 }
