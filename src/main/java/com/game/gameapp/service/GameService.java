@@ -281,7 +281,7 @@ public class GameService {
                     playersToRespond.append(player.getName()).append(" id ").append(player.getId()).append("; ");
                 }
             }
-            return "Current judge: " + judge.getName() +
+            return "Current judge: " + judge.getName() + " id " + judge.getId() +
                     "\nPlayers: " + playersToRespond;
         }
     }
