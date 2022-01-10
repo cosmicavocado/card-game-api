@@ -89,8 +89,4 @@ public class PlayerService {
     public void startGame(LinkedHashMap<String, ArrayList<Long>> players) {
         gameService.startGame(players);
     }
-
-    public Card playCard(Long playerId, int cardIndex) {
-        return gameService.playCard(playerId,cardIndex);
-    }
 }
