@@ -234,7 +234,9 @@ public class GameService {
 //                    LOGGER.info("Error" + e + ": thread interrupted");
 //                }
 //            }
+
             // throwaway code for testing
+            // simulate player responses
             for(Player player : currentPlayers) {
                 if(player != judge) {
                     responses.put(player.hand.get(0), player);
