@@ -41,8 +41,6 @@ This is a Cards Against Humanity inspired game API.
 
 We used a kanban board to break our project up into smaller deliverables and moved each along the track as we worked to complete them.
 
-![img_1.png](img_1.png)
-
 ## User Stories
 
 **As a player, I want to...**
