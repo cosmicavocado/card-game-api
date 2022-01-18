@@ -60,11 +60,9 @@ We used a kanban board to break our project up into smaller deliverables and mov
 - See a message announcing the winning player so that all players know who won.
 - Reset the game so that I don’t have to reload the application just to begin a new game.
 
-## ERD
+## Endpoints
 
 ![img.png](img.png)
-
-## Endpoints
 
 | Request Type | URL                         | Request Body        | Functionality                          |
 |--------------|-----------------------------|---------------------|----------------------------------------|
