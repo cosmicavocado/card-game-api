@@ -1,6 +1,5 @@
 package com.game.gameapp.controller;
 
-import com.game.gameapp.model.Card;
 import com.game.gameapp.model.Player;
 import com.game.gameapp.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,17 +66,5 @@ public class PlayerController {
     public void startGame(@RequestBody LinkedHashMap<String, ArrayList<Long>> players) {
         LOGGER.info("Calling startGame method from player controller.");
         playerService.startGame(players);
-    }
-
-    // http://localhost:9092/api/player/{responseId}
-//    @GetMapping(path="/player/{responseIndex}")
-//    public String bestResponse(@PathVariable int responseIndex) {
-//        LOGGER.info("Calling pickResponse from player controller.");
-//        return playerService.bestResponse(responseIndex);
-//    }
-
-    @GetMapping(path="/player/{playerId}/hand")
-    public String viewHand(@PathVariable Long playerId) {
-        return playerService.viewHand(playerId);
     }
 }

@@ -41,6 +41,8 @@ This is a Cards Against Humanity inspired game API.
 
 We used a kanban board to break our project up into smaller deliverables and moved each along the track as we worked to complete them.
 
+![img_1.png](img_1.png)
+
 ## User Stories
 
 **As a player, I want to...**
@@ -59,6 +61,8 @@ We used a kanban board to break our project up into smaller deliverables and mov
 - Reset the game so that I don’t have to reload the application just to begin a new game.
 
 ## Endpoints
+
+![img.png](img.png)
 
 | Request Type | URL                         | Request Body        | Functionality                          |
 |--------------|-----------------------------|---------------------|----------------------------------------|
@@ -98,6 +102,8 @@ We used a kanban board to break our project up into smaller deliverables and mov
   - We were proud that we produced a working version worth sharing with the class.
 - It runs.
 - It's clean.
+
+![img_2.png](img_2.png)
 
 ## What We Would Do Differently
 

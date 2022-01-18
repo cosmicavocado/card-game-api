@@ -18,7 +18,7 @@ public class Game {
     private int topScore;
 
     @Transient
-    private static ArrayList<CustomCard> deck;
+    private static ArrayList<Card> deck;
 
     @Transient
     private static ArrayList<Prompt> promptList;
@@ -42,11 +42,11 @@ public class Game {
         this.currentPlayers = currentPlayers;
     }
 
-    public ArrayList<CustomCard> getDeck() {
+    public ArrayList<Card> getDeck() {
         return deck;
     }
 
-    public void setDeck(ArrayList<CustomCard> deck) {
+    public void setDeck(ArrayList<Card> deck) {
         Game.deck = deck;
     }
 
@@ -63,6 +63,6 @@ public class Game {
     }
 
     public void setPromptList(ArrayList<Prompt> promptList) {
-        this.promptList = promptList;
+        Game.promptList = promptList;
     }
 }
